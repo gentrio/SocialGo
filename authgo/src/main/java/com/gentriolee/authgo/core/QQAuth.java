@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.gentriolee.authgo.core.callback.SocialAuthCallback;
 import com.gentriolee.authgo.core.entities.QQLoginResultEntity;
 import com.gentriolee.socialgo.core.QQSocial;
+import com.gentriolee.socialgo.core.SocialType;
 import com.google.gson.Gson;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
@@ -25,6 +26,7 @@ public class QQAuth extends QQSocial implements IAuth, IUiListener {
 
     @Override
     public void auth(SocialAuthCallback callback) {
+        callback.setShareType(SocialType.TYPE_QQ);
         this.callback = callback;
         if (!tencent.isSessionValid()) {
             tencent.login(activity, "all", this);

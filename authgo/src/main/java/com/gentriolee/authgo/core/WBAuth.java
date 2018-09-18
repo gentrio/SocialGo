@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.gentriolee.authgo.core.callback.SocialAuthCallback;
+import com.gentriolee.socialgo.core.SocialType;
 import com.gentriolee.socialgo.core.WBSocial;
 import com.sina.weibo.sdk.auth.AccessTokenKeeper;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
@@ -26,6 +27,7 @@ public class WBAuth extends WBSocial implements IAuth, WbAuthListener {
 
     @Override
     public void auth(SocialAuthCallback callback) {
+        callback.setShareType(SocialType.TYPE_WB);
         this.callback = callback;
 
         ssoHandler = new SsoHandler(activity);

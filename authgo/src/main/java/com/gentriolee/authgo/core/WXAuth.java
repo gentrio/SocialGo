@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.gentriolee.authgo.R;
 import com.gentriolee.authgo.core.callback.SocialAuthCallback;
+import com.gentriolee.socialgo.core.SocialType;
 import com.gentriolee.socialgo.core.WXSocial;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
@@ -25,6 +26,7 @@ public class WXAuth extends WXSocial implements IAuth, IWXAPIEventHandler {
 
     @Override
     public void auth(SocialAuthCallback callback) {
+        callback.setShareType(SocialType.TYPE_WX);
         this.callback = callback;
         if (!iwxapi.isWXAppInstalled()) {
             if (callback != null) {
@@ -40,6 +42,7 @@ public class WXAuth extends WXSocial implements IAuth, IWXAPIEventHandler {
     }
 
     public void warrant(SocialAuthCallback callback) {
+        callback.setShareType(SocialType.TYPE_WX);
         this.callback = callback;
         if (!iwxapi.isWXAppInstalled()) {
             if (callback != null) {
