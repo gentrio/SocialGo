@@ -11,19 +11,19 @@ import com.tencent.mm.opensdk.modelbase.BaseResp;
 
 public class SocialGo {
 
-    public static ISocialGo shareHelper;
-    public static ISocialGo authHelper;
+    public static ISocial shareGo;
+    public static ISocial authGo;
 
     /**
      * 在主工程的DWXEntryActivity的onReq()中调用
      * @param baseReq
      */
     public static void onWXAPIHandlerReq(BaseReq baseReq) {
-        if (shareHelper != null) {
-            shareHelper.onWXAPIHandlerReq(baseReq);
+        if (shareGo != null) {
+            shareGo.onWXAPIHandlerReq(baseReq);
         }
-        if (authHelper != null) {
-            authHelper.onWXAPIHandlerReq(baseReq);
+        if (authGo != null) {
+            authGo.onWXAPIHandlerReq(baseReq);
         }
     }
 
@@ -32,11 +32,11 @@ public class SocialGo {
      * @param baseResp
      */
     public static void onWXAPIHandlerResp(BaseResp baseResp) {
-        if (shareHelper != null) {
-            shareHelper.onWXAPIHandlerResp(baseResp);
+        if (shareGo != null) {
+            shareGo.onWXAPIHandlerResp(baseResp);
         }
-        if (authHelper != null) {
-            authHelper.onWXAPIHandlerResp(baseResp);
+        if (authGo != null) {
+            authGo.onWXAPIHandlerResp(baseResp);
         }
     }
 
@@ -45,11 +45,11 @@ public class SocialGo {
      * @param baseReq
      */
     public static void onDDAPIHandlerReq(com.android.dingtalk.share.ddsharemodule.message.BaseReq baseReq) {
-        if (shareHelper != null) {
-            shareHelper.onDDAPIHandlerReq(baseReq);
+        if (shareGo != null) {
+            shareGo.onDDAPIHandlerReq(baseReq);
         }
-        if (authHelper != null) {
-            authHelper.onDDAPIHandlerReq(baseReq);
+        if (authGo != null) {
+            authGo.onDDAPIHandlerReq(baseReq);
         }
     }
 
@@ -58,11 +58,11 @@ public class SocialGo {
      * @param baseResp
      */
     public static void onDDAPIHandlerResp(com.android.dingtalk.share.ddsharemodule.message.BaseResp baseResp) {
-        if (shareHelper != null) {
-            shareHelper.onDDAPIHandlerResp(baseResp);
+        if (shareGo != null) {
+            shareGo.onDDAPIHandlerResp(baseResp);
         }
-        if (authHelper != null) {
-            authHelper.onDDAPIHandlerResp(baseResp);
+        if (authGo != null) {
+            authGo.onDDAPIHandlerResp(baseResp);
         }
     }
 
@@ -73,11 +73,11 @@ public class SocialGo {
      * @param data
      */
     public static void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (shareHelper != null) {
-            shareHelper.onActivityResult(requestCode, resultCode, data);
+        if (shareGo != null) {
+            shareGo.onActivityResult(requestCode, resultCode, data);
         }
-        if (authHelper != null) {
-            authHelper.onActivityResult(requestCode, resultCode, data);
+        if (authGo != null) {
+            authGo.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -86,11 +86,11 @@ public class SocialGo {
      * @param intent
      */
     public static void onNewIntent(Intent intent) {
-        if (shareHelper != null) {
-            shareHelper.onNewIntent(intent);
+        if (shareGo != null) {
+            shareGo.onNewIntent(intent);
         }
-        if (authHelper != null) {
-            authHelper.onNewIntent(intent);
+        if (authGo != null) {
+            authGo.onNewIntent(intent);
         }
     }
 }

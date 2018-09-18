@@ -34,7 +34,6 @@ final class WBShare extends WBSocial implements IShare {
 
     private SocialShareCallback shareCallback;
     private WbShareCallback wbShareCallback;
-    private int target;
 
     WBShare(Activity activity, String appId, String redirectUrl) {
         super(activity, appId, redirectUrl);
@@ -42,8 +41,8 @@ final class WBShare extends WBSocial implements IShare {
 
     @Override
     public void share(SocialShareCallback callback, ShareEntity shareInfo) {
+        callback.setShareType(shareInfo.getType());
         this.shareCallback = callback;
-        this.target = shareInfo.getType();
         //微博未安装时会使用网页版微博 可根据业务自行修改
 //        if (!WbSdk.isWbInstall(activity)) {
 //            if (callback != null) {
@@ -67,21 +66,21 @@ final class WBShare extends WBSocial implements IShare {
             @Override
             public void onWbShareSuccess() {
                 if (shareCallback != null) {
-                    shareCallback.shareSuccess(target);
+                    shareCallback.shareSuccess();
                 }
             }
 
             @Override
             public void onWbShareCancel() {
                 if (shareCallback != null && activity != null) {
-                    shareCallback.shareCancel(target);
+                    shareCallback.shareCancel();
                 }
             }
 
             @Override
             public void onWbShareFail() {
                 if (shareCallback != null && activity != null) {
-                    shareCallback.shareFail(target, ErrCode.ERR_SHARE_FAILD);
+                    shareCallback.shareFail(ErrCode.ERR_SDK_INTERNAL, "");
                 }
             }
         };
@@ -202,24 +201,6 @@ final class WBShare extends WBSocial implements IShare {
         if (shareHandler != null) {
             shareHandler.doResultIntent(intent, wbShareCallback);
         }
-    }
-
-    private boolean notFoundFile(String filePath) {
-        if (!TextUtils.isEmpty(filePath)) {
-            File file = new File(filePath);
-            if (!file.exists()) {
-                if (shareCallback != null) {
-                    shareCallback.shareFail(target, ErrCode.ERR_NOT_FOUND_RESOURCE);
-                }
-                return true;
-            }
-        } else {
-            if (shareCallback != null) {
-                shareCallback.shareFail(target, ErrCode.ERR_NOT_FOUND_RESOURCE);
-            }
-            return true;
-        }
-        return false;
     }
 }
 

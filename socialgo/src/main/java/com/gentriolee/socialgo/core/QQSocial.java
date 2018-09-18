@@ -9,7 +9,7 @@ import com.tencent.tauth.Tencent;
  * Created by gentriolee
  */
 
-public class QQSocial {
+public class QQSocial extends BaseSocial{
 
     protected Activity activity;
     protected Tencent tencent;

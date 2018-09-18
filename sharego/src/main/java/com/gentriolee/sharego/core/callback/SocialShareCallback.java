@@ -4,23 +4,41 @@ package com.gentriolee.sharego.core.callback;
  * Created by gentriolee
  */
 
-public interface SocialShareCallback {
+public abstract class SocialShareCallback {
+
+    private int shareType;
+
+    /**
+     * 设置分享类型
+     * @param shareType
+     */
+    public void setShareType(int shareType) {
+        this.shareType = shareType;
+    }
+
+    /**
+     * 分享类型
+     * @return
+     */
+    public int getShareType() {
+        return shareType;
+    }
 
     /**
      * 分享成功
      */
-    void shareSuccess(int target);
+    public abstract void shareSuccess();
 
     /**
      * 分享失败
-     * @param target
+     *
      * @param errorCode
+     * @param defaultMsg
      */
-    void shareFail(int target, int errorCode);
+    public abstract void shareFail(int errorCode, String defaultMsg);
 
     /**
      * 分享取消
-     * @param target
      */
-    void shareCancel(int target);
+    public abstract void shareCancel();
 }

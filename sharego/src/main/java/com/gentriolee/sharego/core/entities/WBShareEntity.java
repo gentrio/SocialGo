@@ -7,6 +7,8 @@ import com.gentriolee.socialgo.annotation.ParamsRequired;
 
 import java.util.ArrayList;
 
+import static com.gentriolee.socialgo.core.SocialType.TYPE_WB;
+
 /**
  * Created by gentriolee
  */

@@ -12,6 +12,9 @@ import com.tencent.connect.share.QzoneShare;
 
 import java.util.ArrayList;
 
+import static com.gentriolee.socialgo.core.SocialType.TYPE_QQ;
+import static com.gentriolee.socialgo.core.SocialType.TYPE_QQ_ZONE;
+
 /**
  * Created by gentriolee
  */

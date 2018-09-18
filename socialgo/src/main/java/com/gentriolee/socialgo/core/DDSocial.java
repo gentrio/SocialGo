@@ -10,7 +10,7 @@ import com.android.dingtalk.share.ddsharemodule.IDDShareApi;
  * Created by gentriolee
  */
 
-public class DDSocial {
+public class DDSocial extends BaseSocial{
     protected Activity activity;
     protected IDDShareApi iddShareApi;
 
@@ -22,4 +22,5 @@ public class DDSocial {
         }
         iddShareApi = DDShareApiFactory.createDDShareApi(activity, appId, true);
     }
+
 }

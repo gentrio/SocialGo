@@ -12,7 +12,7 @@ import com.sina.weibo.sdk.share.WbShareHandler;
  * Created by gentriolee
  */
 
-public class WBSocial {
+public class WBSocial extends BaseSocial{
 
     private static final String SCOPE = "email";
 

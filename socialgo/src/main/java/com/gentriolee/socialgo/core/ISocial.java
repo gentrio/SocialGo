@@ -9,7 +9,7 @@ import com.tencent.mm.opensdk.modelbase.BaseResp;
  * Created by gentriolee
  */
 
-public interface ISocialGo {
+public interface ISocial {
 
     void onWXAPIHandlerReq(BaseReq baseReq);
 

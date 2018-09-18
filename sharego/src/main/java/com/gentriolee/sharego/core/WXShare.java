@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.gentriolee.sharego.R;
 import com.gentriolee.sharego.core.callback.SocialLaunchCallback;
 import com.gentriolee.sharego.core.callback.SocialShareCallback;
 import com.gentriolee.sharego.core.entities.ShareEntity;
@@ -26,6 +27,8 @@ import com.tencent.mm.opensdk.modelmsg.WXVideoObject;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 
+import static com.gentriolee.socialgo.core.SocialType.TYPE_WX_TIMELINE;
+
 /**
  * Created by gentriolee
  */
@@ -34,7 +37,6 @@ public class WXShare extends WXSocial implements IShare, IWXAPIEventHandler {
 
     private SocialShareCallback shareCallback;
     private SocialLaunchCallback launchCallback;
-    private int target;
 
     WXShare(Activity activity, String appId) {
         super(activity, appId);
@@ -42,19 +44,19 @@ public class WXShare extends WXSocial implements IShare, IWXAPIEventHandler {
 
     @Override
     public void share(SocialShareCallback callback, ShareEntity shareInfo) {
+        callback.setShareType(shareInfo.getType());
         this.shareCallback = callback;
-        this.target = shareInfo.getType();
         if (!iwxapi.isWXAppInstalled()) {
             if (callback != null) {
-                callback.shareFail(target, ErrCode.ERR_NOT_INSTALLED);
+                callback.shareFail(ErrCode.ERR_NOT_INSTALLED, getString(R.string.social_uninstall_wx));
             }
             return;
         }
         //是否分享到朋友圈，微信4.2以下不支持朋友圈
-        boolean isTimeLine = shareInfo.getType() == ShareEntity.TYPE_WX_TIMELINE;
+        boolean isTimeLine = shareInfo.getType() == TYPE_WX_TIMELINE;
         if (isTimeLine && iwxapi.getWXAppSupportAPI() < 0x21020001) {
             if (shareCallback != null) {
-                shareCallback.shareFail(target, ErrCode.ERR_LOW_VERSION);
+                shareCallback.shareFail(ErrCode.ERR_LOW_VERSION, getString(R.string.share_wx_version_low_error));
             }
             return;
         }
@@ -73,14 +75,14 @@ public class WXShare extends WXSocial implements IShare, IWXAPIEventHandler {
         this.launchCallback = callback;
         if (!iwxapi.isWXAppInstalled()) {
             if (callback != null) {
-                callback.launchFail(ErrCode.ERR_NOT_INSTALLED);
+                callback.launchFail(ErrCode.ERR_NOT_INSTALLED, getString(R.string.social_uninstall_wx));
             }
             return;
         }
 
         if (TextUtils.isEmpty(launchInfo.getUserName())) {
             if (callback != null) {
-                callback.launchFail(ErrCode.ERR_UNKNOW);
+                callback.launchFail(ErrCode.ERR_EMPTY_APPID, getString(R.string.share_empty_origin_id));
             }
             return;
         }
@@ -221,9 +223,9 @@ public class WXShare extends WXSocial implements IShare, IWXAPIEventHandler {
         if (baseResp.getType() == ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX) {
             //分享
             if (baseResp.errCode == BaseResp.ErrCode.ERR_OK) {
-                shareCallback.shareSuccess(target);
+                shareCallback.shareSuccess();
             } else {
-                shareCallback.shareCancel(target);
+                shareCallback.shareCancel();
             }
         } else if (baseResp.getType() == ConstantsAPI.COMMAND_LAUNCH_WX_MINIPROGRAM) {
             //跳转微信小程序

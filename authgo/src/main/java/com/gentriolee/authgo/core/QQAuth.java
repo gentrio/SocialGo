@@ -15,7 +15,7 @@ import com.tencent.tauth.UiError;
  * Created by gentriolee
  */
 
-public class QQAuth extends QQSocial implements IAuthGo, IUiListener {
+public class QQAuth extends QQSocial implements IAuth, IUiListener {
 
     private SocialAuthCallback callback;
 
@@ -44,12 +44,12 @@ public class QQAuth extends QQSocial implements IAuthGo, IUiListener {
 
     @Override
     public void onError(UiError uiError) {
-        callback.authFail(uiError.errorMessage);
+        callback.authFail(ErrCode.ERR_SDK_INTERNAL, uiError.errorMessage);
     }
 
     @Override
     public void onCancel() {
-//        callback.authCancel(activity.getString(R.string.social_social_cancel));
+        callback.authCancel();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

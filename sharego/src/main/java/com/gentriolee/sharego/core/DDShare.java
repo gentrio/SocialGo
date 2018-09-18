@@ -13,6 +13,7 @@ import com.android.dingtalk.share.ddsharemodule.message.DDMediaMessage;
 import com.android.dingtalk.share.ddsharemodule.message.DDTextMessage;
 import com.android.dingtalk.share.ddsharemodule.message.DDWebpageMessage;
 import com.android.dingtalk.share.ddsharemodule.message.SendMessageToDD;
+import com.gentriolee.sharego.R;
 import com.gentriolee.sharego.core.callback.SocialShareCallback;
 import com.gentriolee.sharego.core.entities.DDShareEntity;
 import com.gentriolee.sharego.core.entities.ShareEntity;
@@ -28,7 +29,6 @@ import java.io.File;
 public class DDShare extends DDSocial implements IShare, IDDAPIEventHandler {
 
     private SocialShareCallback shareCallback;
-    private int target;
 
     DDShare(Activity activity, String appId) {
         super(activity, appId);
@@ -36,17 +36,17 @@ public class DDShare extends DDSocial implements IShare, IDDAPIEventHandler {
 
     @Override
     public void share(SocialShareCallback callback, ShareEntity shareInfo) {
+        callback.setShareType(shareInfo.getType());
         this.shareCallback = callback;
-        this.target = shareInfo.getType();
         if (!iddShareApi.isDDAppInstalled()) {
             if (shareCallback != null) {
-                callback.shareFail(target, ErrCode.ERR_NOT_INSTALLED);
+                callback.shareFail(ErrCode.ERR_NOT_INSTALLED, getString(R.string.social_uninstall_dd));
             }
             return;
         }
         if (!iddShareApi.isDDSupportAPI()) {
             if (shareCallback != null) {
-                callback.shareFail(target, ErrCode.ERR_LOW_VERSION);
+                callback.shareFail(ErrCode.ERR_LOW_VERSION, getString(R.string.share_dd_version_low_error));
             }
             return;
         }
@@ -124,24 +124,6 @@ public class DDShare extends DDSocial implements IShare, IDDAPIEventHandler {
         return false;
     }
 
-    private boolean notFoundFile(String filePath) {
-        if (!TextUtils.isEmpty(filePath)) {
-            File file = new File(filePath);
-            if (!file.exists()) {
-                if (shareCallback != null) {
-                    shareCallback.shareFail(target, ErrCode.ERR_NOT_FOUND_RESOURCE);
-                }
-                return true;
-            }
-        } else {
-            if (shareCallback != null) {
-                shareCallback.shareFail(target, ErrCode.ERR_NOT_FOUND_RESOURCE);
-            }
-            return true;
-        }
-        return false;
-    }
-
     @Override
     public void onReq(BaseReq baseReq) {
         //nothing
@@ -151,9 +133,9 @@ public class DDShare extends DDSocial implements IShare, IDDAPIEventHandler {
     public void onResp(BaseResp baseResp) {
         //只支持分享 暂不支持授权登录
         if (baseResp.mErrCode == BaseResp.ErrCode.ERR_OK) {
-            shareCallback.shareSuccess(target);
+            shareCallback.shareSuccess();
         } else {
-            shareCallback.shareCancel(target);
+            shareCallback.shareCancel();
         }
     }
 

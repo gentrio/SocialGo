@@ -12,7 +12,7 @@ public class ShareImageConstant {
     /**
      * 保存相册的存放路径
      */
-    private static final String cameraPath = "/分享相册/";
+    private static final String cameraPath = "/Album/";
 
     /**
      * 分享图片临时存放路径
@@ -36,7 +36,7 @@ public class ShareImageConstant {
      * 相册保存路径
      * @return
      */
-    public static String getCameraSavePath() {
-        return Environment.getExternalStorageDirectory() + cameraPath;
+    public static String getCameraSavePath(Context context) {
+        return Environment.getExternalStorageDirectory() + context.getPackageName() + cameraPath;
     }
 }

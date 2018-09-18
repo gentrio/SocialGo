@@ -15,7 +15,7 @@ import com.sina.weibo.sdk.auth.sso.SsoHandler;
  * Created by gentriolee
  */
 
-public class WBAuth extends WBSocial implements IAuthGo, WbAuthListener {
+public class WBAuth extends WBSocial implements IAuth, WbAuthListener {
 
 
     private SocialAuthCallback callback;
@@ -38,18 +38,18 @@ public class WBAuth extends WBSocial implements IAuthGo, WbAuthListener {
             AccessTokenKeeper.writeAccessToken(activity, oauth2AccessToken);
             callback.authSuccess(oauth2AccessToken.getToken());
         } else {
-//            callback.authFail(activity.getString(R.string.social_social_cancel));
+            callback.authFail(ErrCode.ERR_SDK_INTERNAL, "");
         }
     }
 
     @Override
     public void cancel() {
-//        callback.loginCancel(activity.getString(R.string.social_social_cancel));
+        callback.authCancel();
     }
 
     @Override
     public void onFailure(WbConnectErrorMessage wbConnectErrorMessage) {
-        callback.authFail(wbConnectErrorMessage.getErrorMessage());
+        callback.authFail(ErrCode.ERR_SDK_INTERNAL, wbConnectErrorMessage.getErrorMessage());
     }
 
     void onActivityResult(int requestCode, int resultCode, Intent data) {

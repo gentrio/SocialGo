@@ -3,6 +3,7 @@ package com.gentriolee.sharego.core.entities;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
+
 import java.util.ArrayList;
 
 /**
@@ -10,29 +11,6 @@ import java.util.ArrayList;
  */
 
 public class ShareEntity {
-
-    /**
-     * 微信 = 1 << 2
-     * 朋友圈 = 1 << 3
-     * QQ = 1 << 4
-     * QQ空间 = 1<< 5
-     * 微博 = 1<< 6
-     * 钉钉 = 1 << 7
-     */
-
-    public static final int TYPE_WX = 1 << 2;
-    public static final int TYPE_WX_TIMELINE = 1 << 3;
-    public static final int TYPE_QQ = 1 << 4;
-    public static final int TYPE_QQ_ZONE = 1 << 5;
-    public static final int TYPE_WB = 1 << 6;
-    public static final int TYPE_DD = 1 << 7;
-    /**
-     * 分享图片
-     * 分享链接
-     * 分享图片&链接
-     */
-    public static final int TYPE_IMG = 1;
-    public static final int TYPE_LINK = 1 << 1;
 
     private int type;
     Bundle params;

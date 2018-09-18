@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">ShareGo</string>
+    <string name="share_dd_version_low_error">钉钉2.7以上才支持分享，请升级钉钉</string>
+    <string name="share_wx_version_low_error">微信4.2以上才支持分享朋友圈，请升级微信</string>
+    <string name="share_empty_origin_id">小程序原始Id为空</string>
 </resources>

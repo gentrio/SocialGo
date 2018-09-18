@@ -46,7 +46,7 @@ public class ShareUtils {
     }
 
     public static String saveToFile(Context context, Bitmap imgBitmap) {
-        String cameraPath = ShareImageConstant.getCameraSavePath();
+        String cameraPath = ShareImageConstant.getCameraSavePath(context);
         File cameraFile = new File(cameraPath);
         if (!cameraFile.exists()) {
             cameraFile.mkdirs();

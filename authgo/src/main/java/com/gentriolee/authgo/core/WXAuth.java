@@ -2,6 +2,7 @@ package com.gentriolee.authgo.core;
 
 import android.app.Activity;
 
+import com.gentriolee.authgo.R;
 import com.gentriolee.authgo.core.callback.SocialAuthCallback;
 import com.gentriolee.socialgo.core.WXSocial;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
@@ -14,7 +15,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
  * Created by gentriolee
  */
 
-public class WXAuth extends WXSocial implements IAuthGo, IWXAPIEventHandler {
+public class WXAuth extends WXSocial implements IAuth, IWXAPIEventHandler {
 
     private SocialAuthCallback callback;
 
@@ -27,7 +28,7 @@ public class WXAuth extends WXSocial implements IAuthGo, IWXAPIEventHandler {
         this.callback = callback;
         if (!iwxapi.isWXAppInstalled()) {
             if (callback != null) {
-//                callback.authFail(activity.getString(R.string.social_wx_uninstall));
+                callback.authFail(ErrCode.ERR_NOT_INSTALLED, getString(R.string.social_uninstall_wx));
             }
             return;
         }
@@ -42,7 +43,7 @@ public class WXAuth extends WXSocial implements IAuthGo, IWXAPIEventHandler {
         this.callback = callback;
         if (!iwxapi.isWXAppInstalled()) {
             if (callback != null) {
-//                callback.authFail(activity.getString(R.string.social_wx_uninstall));
+                callback.authFail(ErrCode.ERR_NOT_INSTALLED, getString(R.string.social_uninstall_wx));
             }
             return;
         }
@@ -67,7 +68,7 @@ public class WXAuth extends WXSocial implements IAuthGo, IWXAPIEventHandler {
                 String code = ((SendAuth.Resp) baseResp).code;
                 callback.authSuccess(code);
             } else {
-//                callback.authCancel(activity.getString(R.string.social_social_cancel));
+                callback.authCancel();
             }
         }
     }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.gentriolee.sharego.R;
 import com.gentriolee.sharego.core.callback.SocialShareCallback;
 import com.gentriolee.sharego.core.entities.ShareEntity;
 import com.gentriolee.socialgo.core.QQSocial;
@@ -11,6 +12,8 @@ import com.tencent.connect.share.QzonePublish;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
+
+import static com.gentriolee.socialgo.core.SocialType.TYPE_QQ;
 
 /**
  * Created by gentriolee
@@ -20,18 +23,17 @@ public class QQShare extends QQSocial implements IShare {
 
     private SocialShareCallback shareCallback;
     private IUiListener shareListener;
-    private int target;
 
     QQShare(Activity activity, String appId) {
         super(activity, appId);
     }
 
     private void initShareListener() {
-        shareListener = new NormalUIListener(activity, target, shareCallback) {
+        shareListener = new NormalUIListener(activity, shareCallback) {
             @Override
             public void onComplete(Object o) {
                 if (shareCallback != null) {
-                    shareCallback.shareSuccess(target);
+                    shareCallback.shareSuccess();
                 }
             }
         };
@@ -42,16 +44,16 @@ public class QQShare extends QQSocial implements IShare {
      */
     @Override
     public void share(SocialShareCallback callback, ShareEntity shareInfo) {
+
         this.shareCallback = callback;
-        this.target = shareInfo.getType();
         if (!tencent.isQQInstalled(activity)) {
             if (callback != null) {
-                callback.shareFail(target, ErrCode.ERR_NOT_INSTALLED);
+                callback.shareFail(ErrCode.ERR_NOT_INSTALLED, getString(R.string.social_uninstall_qq));
             }
             return;
         }
         initShareListener();
-        if (shareInfo.getType() == ShareEntity.TYPE_QQ) {
+        if (shareInfo.getType() == TYPE_QQ) {
             tencent.shareToQQ(activity, shareInfo.getParams(), shareListener);
         } else {
             if (shareInfo.getParams().containsKey(QzonePublish.PUBLISH_TO_QZONE_KEY_TYPE) &&
@@ -75,25 +77,23 @@ public class QQShare extends QQSocial implements IShare {
     private abstract static class NormalUIListener implements IUiListener {
         private SocialShareCallback callback;
         private Context context;
-        private int target;
 
-        NormalUIListener(Context context, int target, SocialShareCallback callback) {
+        NormalUIListener(Context context, SocialShareCallback callback) {
             this.context = context;
-            this.target = target;
             this.callback = callback;
         }
 
         @Override
         public void onError(UiError uiError) {
             if (callback != null) {
-                callback.shareFail(target, ErrCode.ERR_SHARE_FAILD);
+                callback.shareFail(ErrCode.ERR_SDK_INTERNAL, uiError.errorMessage);
             }
         }
 
         @Override
         public void onCancel() {
             if (callback != null && context != null) {
-                callback.shareCancel(target);
+                callback.shareCancel();
             }
         }
     }

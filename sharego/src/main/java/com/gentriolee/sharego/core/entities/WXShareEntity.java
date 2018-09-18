@@ -5,6 +5,9 @@ import android.os.Bundle;
 
 import com.gentriolee.socialgo.annotation.ParamsRequired;
 
+import static com.gentriolee.socialgo.core.SocialType.TYPE_WX;
+import static com.gentriolee.socialgo.core.SocialType.TYPE_WX_TIMELINE;
+
 /**
  * Created by gentriolee
  */

@@ -14,7 +14,7 @@ import com.gentriolee.socialgo.core.DDSocial;
  */
 
 @Unsupported
-public class DDAuth extends DDSocial implements IAuthGo, IDDAPIEventHandler {
+public class DDAuth extends DDSocial implements IAuth, IDDAPIEventHandler {
 
     DDAuth(Activity activity, String appId) {
         super(activity, appId);

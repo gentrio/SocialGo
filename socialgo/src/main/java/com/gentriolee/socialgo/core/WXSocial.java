@@ -10,7 +10,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
  * Created by gentriolee
  */
 
-public class WXSocial {
+public class WXSocial extends BaseSocial{
 
     protected Activity activity;
     protected IWXAPI iwxapi;
