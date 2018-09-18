@@ -31,6 +31,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    implementation 'com.gentriolee.socialgo:share:1.0.0'
-    implementation 'com.gentriolee.socialgo:auth:1.0.0'
+    implementation 'com.gentriolee.socialgo:sharego:1.0.0'
+    implementation 'com.gentriolee.socialgo:authgo:1.0.0'
 }
