@@ -1,17 +1,19 @@
-# 第三方社会化工具业务库（第三方分享&第三方登录）
+# 社会化工具业务库（分享&登录）
+
+支持微信、QQ、微博、钉钉
 
 ## 工程结构
-* socialgo 第三方社会化库的配置中心
-* sharego 分享核心
-* authgo 授权登录核心
-* sample 例子
+* 👉️ socialgo 第三方社会化库的配置中心
+* 👉️ sharego 分享核心
+* 👉️ authgo 授权登录核心
+* 👉️ sample 例子
 
 ## 初始化
 
 ### AndroidManifest.xml配置
 
 ```xml
-<!--qq配置开始-->
+<!--QQ配置开始-->
 <activity
     android:name="com.tencent.tauth.AuthActivity"
     android:launchMode="singleTask"
@@ -29,7 +31,7 @@
     android:name="com.tencent.connect.common.AssistActivity"
     android:configChanges="orientation|keyboardHidden|screenSize"
     android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-<!--qq配置结束-->
+<!--QQ配置结束-->
 
 <!-- 钉钉分享授权配置开始（该Activity自行创建放在当前工程的包下） -->
 <activity

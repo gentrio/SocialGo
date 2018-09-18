@@ -44,10 +44,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         if (null == baseResp) {
             return;
         }
-        if (baseResp.getType() == ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX) {
-            // 认证返回
-            SocialGo.onWXAPIHandlerResp(baseResp);
-        }
+        SocialGo.onWXAPIHandlerResp(baseResp);
         finish();
     }
 }
