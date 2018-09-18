@@ -37,3 +37,5 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.4'
     api project(':socialgo')
 }
+
+apply from: rootProject.file('./mvn-push.gradle')

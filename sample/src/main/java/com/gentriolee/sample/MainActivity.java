@@ -1,13 +1,12 @@
-package com.gentriolee.socialgo;
+package com.gentriolee.sample;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import com.gentriolee.sharego.core.ShareGo;
 import com.gentriolee.sharego.core.callback.SocialShareCallback;

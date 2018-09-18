@@ -36,3 +36,5 @@ dependencies {
 
     api project(':socialgo')
 }
+
+apply from: rootProject.file('./mvn-push.gradle')

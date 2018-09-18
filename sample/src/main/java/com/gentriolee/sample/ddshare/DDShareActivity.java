@@ -1,4 +1,4 @@
-package com.gentriolee.socialgo.ddshare;
+package com.gentriolee.sample.ddshare;
 
 import android.app.Activity;
 import android.os.Bundle;

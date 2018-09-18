@@ -1,4 +1,4 @@
-package com.gentriolee.socialgo;
+package com.gentriolee.sample;
 
 import android.app.Application;
 

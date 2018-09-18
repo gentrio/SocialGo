@@ -1,5 +1,5 @@
 
-package com.gentriolee.socialgo.wxapi;
+package com.gentriolee.sample.wxapi;
 
 import android.app.Activity;
 import android.content.Intent;
