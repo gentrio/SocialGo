@@ -55,16 +55,6 @@ public class AuthGo implements ISocial {
     }
 
     /**
-     * 微信授权绑定
-     * @param activity
-     * @param callback
-     */
-    public void warrantWX(Activity activity, SocialAuthCallback callback) {
-        wxAuth = new WXAuth(activity, builder.getWxAppId());
-        wxAuth.warrant(callback);
-    }
-
-    /**
      * 微博登录
      * @param activity
      * @param callback

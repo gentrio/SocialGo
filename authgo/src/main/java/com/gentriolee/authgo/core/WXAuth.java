@@ -41,22 +41,6 @@ public class WXAuth extends WXSocial implements IAuth, IWXAPIEventHandler {
         iwxapi.sendReq(req);
     }
 
-    public void warrant(SocialAuthCallback callback) {
-        callback.setShareType(SocialType.TYPE_WX);
-        this.callback = callback;
-        if (!iwxapi.isWXAppInstalled()) {
-            if (callback != null) {
-                callback.authFail(ErrCode.ERR_NOT_INSTALLED, getString(R.string.social_uninstall_wx));
-            }
-            return;
-        }
-
-        SendAuth.Req req = new SendAuth.Req();
-        req.scope = "snsapi_userinfo";
-        req.state = "doWeChatWarrant";
-        iwxapi.sendReq(req);
-    }
-
     @Override
     public void onReq(BaseReq baseReq) {
         //nothing
