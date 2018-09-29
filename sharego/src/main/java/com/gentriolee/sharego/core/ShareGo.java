@@ -48,6 +48,35 @@ public class ShareGo implements ISocial {
     }
 
     //<editor-fold desc="分享方式">
+
+    /**
+     * 根据ShareEntity的type来执行不同分享
+     * @param activity
+     * @param shareInfo
+     * @param callback
+     */
+    public void share(Activity activity, ShareEntity shareInfo, SocialShareCallback callback) {
+        if (shareInfo == null) {
+            return;
+        }
+        switch (shareInfo.getTarget()) {
+            case ISocial.TARGET_WX:
+            case ISocial.TARGET_WX_TIMELINE:
+                shareWX(activity, shareInfo, callback);
+                break;
+            case ISocial.TARGET_QQ:
+            case ISocial.TARGET_QQ_ZONE:
+                shareQQ(activity, shareInfo, callback);
+                break;
+            case ISocial.TARGET_WB:
+                shareWB(activity, shareInfo, callback);
+                break;
+            case ISocial.TARGET_DD:
+                shareDD(activity, shareInfo, callback);
+                break;
+        }
+    }
+
     /**
      * 微信分享
      * @param activity

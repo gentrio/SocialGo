@@ -1,12 +1,10 @@
 package com.gentriolee.sharego.core.entities;
 
 import android.graphics.Bitmap;
-import android.os.Bundle;
 
 import com.gentriolee.socialgo.annotation.ParamsRequired;
 
-import static com.gentriolee.socialgo.core.SocialType.TYPE_DD;
-import static com.gentriolee.socialgo.core.SocialType.TYPE_WB;
+import static com.gentriolee.socialgo.core.ISocial.TARGET_DD;
 
 /**
  * Created by gentriolee
@@ -14,20 +12,8 @@ import static com.gentriolee.socialgo.core.SocialType.TYPE_WB;
 
 public class DDShareEntity extends ShareEntity {
 
-    public static final String KEY_DD_TYPE = "key_dd_type";
-
-    public static final int TYPE_TEXT = 0;
-    public static final int TYPE_IMG = 1;
-    public static final int TYPE_WEB = 2;
-
-    public static final String KEY_DD_TITLE = "key_dd_title";
-    public static final String KEY_DD_SUMMARY = "key_dd_summary";
-    public static final String KEY_DD_TEXT = "key_dd_text";
-    public static final String KEY_DD_IMG_BITMAP = "key_dd_img_bitmap";
-    public static final String KEY_DD_WEB_URL = "key_dd_web_url";
-
-    private DDShareEntity(int type) {
-        super(type);
+    private DDShareEntity() {
+        super(TARGET_DD);
     }
 
     /**
@@ -35,10 +21,7 @@ public class DDShareEntity extends ShareEntity {
      * @param text 分享文本内容
      */
     public static ShareEntity createTextInfo(@ParamsRequired String text) {
-        ShareEntity entity = new ShareEntity(TYPE_DD);
-        addParams(entity.params, KEY_DD_TYPE, TYPE_TEXT);
-        addParams(entity.params, KEY_DD_TEXT, text);
-        return entity;
+        return createTextInfo(TARGET_DD, text);
     }
 
     /**
@@ -47,39 +30,19 @@ public class DDShareEntity extends ShareEntity {
      * @param imgBitmap     本地图片地址
      */
     public static ShareEntity createImageInfo(@ParamsRequired Bitmap imgBitmap) {
-        ShareEntity entity = new ShareEntity(TYPE_DD);
-        addParams(entity.params, KEY_DD_TYPE, TYPE_IMG);
-        addParams(entity.params, KEY_DD_IMG_BITMAP, imgBitmap);
-        return entity;
+        return createImageInfo(TARGET_DD, imgBitmap);
     }
 
     /**
      * 分享网页
      *
-     * @param webUrl  网页链接
-     * @param title   网页标题
-     * @param summary 网页摘要
-     * @param imgBitmap     网页左边图标，本地路径
-     * @param text    文本内容
+     * @param title     网页标题
+     * @param summary   网页摘要
+     * @param webUrl    网页链接
+     * @param imgBitmap 网页左边图标，本地路径
      */
-    public static ShareEntity createWebInfo(@ParamsRequired String webUrl, String title, String summary, Bitmap imgBitmap, String text) {
-        ShareEntity entity = new ShareEntity(TYPE_WB);
-        addParams(entity.params, KEY_DD_TYPE, TYPE_WEB);
-        addParams(entity.params, KEY_DD_WEB_URL, webUrl);
-        addParams(entity.params, KEY_DD_TEXT, text);
-        addTitleSummaryAndThumb(entity.params, title, summary, imgBitmap);
-        return entity;
-    }
-
-    /**
-     * @param title   标题
-     * @param summary 摘要
-     * @param imgBitmap  本地图片地址
-     */
-    private static void addTitleSummaryAndThumb(Bundle params, String title, String summary, Bitmap imgBitmap) {
-        addParams(params, KEY_DD_TITLE, title);
-        addParams(params, KEY_DD_SUMMARY, summary);
-        addParams(params, KEY_DD_IMG_BITMAP, imgBitmap);
+    public static ShareEntity createWebInfo(@ParamsRequired String title, @ParamsRequired String summary, @ParamsRequired String webUrl, @ParamsRequired Bitmap imgBitmap) {
+        return createWebInfo(TARGET_DD, title, summary, webUrl, imgBitmap);
     }
 }
 

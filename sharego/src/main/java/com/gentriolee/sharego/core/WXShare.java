@@ -21,13 +21,9 @@ import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXImageObject;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXMiniProgramObject;
-import com.tencent.mm.opensdk.modelmsg.WXMusicObject;
 import com.tencent.mm.opensdk.modelmsg.WXTextObject;
-import com.tencent.mm.opensdk.modelmsg.WXVideoObject;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
-
-import static com.gentriolee.socialgo.core.SocialType.TYPE_WX_TIMELINE;
 
 /**
  * Created by gentriolee
@@ -44,16 +40,16 @@ public class WXShare extends WXSocial implements IShare, IWXAPIEventHandler {
 
     @Override
     public void share(SocialShareCallback callback, ShareEntity shareInfo) {
-        callback.setShareType(shareInfo.getType());
+        callback.setShareType(shareInfo.getTarget());
         this.shareCallback = callback;
         if (!iwxapi.isWXAppInstalled()) {
-            if (callback != null) {
-                callback.shareFail(ErrCode.ERR_NOT_INSTALLED, getString(R.string.social_uninstall_wx));
+            if (shareCallback != null) {
+                shareCallback.shareFail(ErrCode.ERR_NOT_INSTALLED, getString(R.string.social_uninstall_wx));
             }
             return;
         }
         //是否分享到朋友圈，微信4.2以下不支持朋友圈
-        boolean isTimeLine = shareInfo.getType() == TYPE_WX_TIMELINE;
+        boolean isTimeLine = shareInfo.getTarget() == ShareGo.TARGET_WX_TIMELINE;
         if (isTimeLine && iwxapi.getWXAppSupportAPI() < 0x21020001) {
             if (shareCallback != null) {
                 shareCallback.shareFail(ErrCode.ERR_LOW_VERSION, getString(R.string.share_wx_version_low_error));
@@ -74,15 +70,15 @@ public class WXShare extends WXSocial implements IShare, IWXAPIEventHandler {
     public void launch(SocialLaunchCallback callback, WXLaunchEntity launchInfo) {
         this.launchCallback = callback;
         if (!iwxapi.isWXAppInstalled()) {
-            if (callback != null) {
-                callback.launchFail(ErrCode.ERR_NOT_INSTALLED, getString(R.string.social_uninstall_wx));
+            if (launchCallback != null) {
+                launchCallback.launchFail(ErrCode.ERR_NOT_INSTALLED, getString(R.string.social_uninstall_wx));
             }
             return;
         }
 
         if (TextUtils.isEmpty(launchInfo.getUserName())) {
-            if (callback != null) {
-                callback.launchFail(ErrCode.ERR_EMPTY_APPID, getString(R.string.share_empty_origin_id));
+            if (launchCallback != null) {
+                launchCallback.launchFail(ErrCode.ERR_EMPTY_APPID, getString(R.string.share_empty_origin_id));
             }
             return;
         }
@@ -95,25 +91,19 @@ public class WXShare extends WXSocial implements IShare, IWXAPIEventHandler {
 
     private WXMediaMessage createMessage(SendMessageToWX.Req req, Bundle params) {
         WXMediaMessage msg = new WXMediaMessage();
-        int type = params.getInt(WXShareEntity.KEY_WX_TYPE);
+        int type = params.getInt(WXShareEntity.SHARE_TYPE);
         boolean success = false;
         switch (type) {
-            case WXShareEntity.TYPE_TEXT:
+            case WXShareEntity.SHARE_TYPE_TEXT:
                 success = addText(req, msg, params);
                 break;
-            case WXShareEntity.TYPE_IMG:
+            case WXShareEntity.SHARE_TYPE_IMG:
                 success = addImage(req, msg, params);
                 break;
-            case WXShareEntity.TYPE_MUSIC:
-                success = addMusic(req, msg, params);
-                break;
-            case WXShareEntity.TYPE_VIDEO:
-                success = addVideo(req, msg, params);
-                break;
-            case WXShareEntity.TYPE_WEB:
+            case WXShareEntity.SHARE_TYPE_WEB:
                 success = addWeb(req, msg, params);
                 break;
-            case WXShareEntity.TYPE_MINI_APP:
+            case WXShareEntity.SHARE_TYPE_MINI_APP:
                 success = addMiniApp(req, msg, params);
         }
         if (!success) {
@@ -124,7 +114,7 @@ public class WXShare extends WXSocial implements IShare, IWXAPIEventHandler {
 
     private boolean addText(SendMessageToWX.Req req, WXMediaMessage msg, Bundle params) {
         WXTextObject textObj = new WXTextObject();
-        textObj.text = params.getString(WXShareEntity.KEY_WX_TEXT);
+        textObj.text = params.getString(WXShareEntity.SHARE_TITLE);
 
         msg.mediaObject = textObj;
         msg.description = textObj.text;
@@ -134,8 +124,8 @@ public class WXShare extends WXSocial implements IShare, IWXAPIEventHandler {
     }
 
     private boolean addImage(SendMessageToWX.Req req, WXMediaMessage msg, Bundle params) {
-        if (params.containsKey(WXShareEntity.KEY_WX_IMG_BITMAP)) {//分为本地文件和应用内资源图片
-            Bitmap bitmap = params.getParcelable(WXShareEntity.KEY_WX_IMG_BITMAP);
+        if (params.containsKey(WXShareEntity.SHARE_IMAGE_BITMAP)) {//分为本地文件和应用内资源图片
+            Bitmap bitmap = params.getParcelable(WXShareEntity.SHARE_IMAGE_BITMAP);
             msg.mediaObject = new WXImageObject(bitmap);
             msg.thumbData = ShareUtils.smallBmpToByteArray(bitmap);
             req.transaction = ShareUtils.buildTransaction("img");
@@ -144,31 +134,9 @@ public class WXShare extends WXSocial implements IShare, IWXAPIEventHandler {
         return false;
     }
 
-    private boolean addMusic(SendMessageToWX.Req req, WXMediaMessage msg, Bundle params) {
-        WXMusicObject musicObject = new WXMusicObject();
-        musicObject.musicUrl = params.getString(WXShareEntity.KEY_WX_MUSIC_URL);
-
-        msg.mediaObject = musicObject;
-        if (addTitleSummaryAndThumb(msg, params)) return false;
-
-        req.transaction = ShareUtils.buildTransaction("music");
-        return true;
-    }
-
-    private boolean addVideo(SendMessageToWX.Req req, WXMediaMessage msg, Bundle params) {
-        WXVideoObject musicObject = new WXVideoObject();
-        musicObject.videoUrl = params.getString(WXShareEntity.KEY_WX_VIDEO_URL);
-
-        msg.mediaObject = musicObject;
-        if (addTitleSummaryAndThumb(msg, params)) return false;
-
-        req.transaction = ShareUtils.buildTransaction("video");
-        return true;
-    }
-
     private boolean addWeb(SendMessageToWX.Req req, WXMediaMessage msg, Bundle params) {
         WXWebpageObject musicObject = new WXWebpageObject();
-        musicObject.webpageUrl = params.getString(WXShareEntity.KEY_WX_WEB_URL);
+        musicObject.webpageUrl = params.getString(WXShareEntity.SHARE_LINK);
 
         msg.mediaObject = musicObject;
         if (addTitleSummaryAndThumb(msg, params)) return false;
@@ -179,10 +147,10 @@ public class WXShare extends WXSocial implements IShare, IWXAPIEventHandler {
 
     private boolean addMiniApp(SendMessageToWX.Req req, WXMediaMessage msg, Bundle params) {
         WXMiniProgramObject miniProgramObject = new WXMiniProgramObject();
-        miniProgramObject.webpageUrl = params.getString(WXShareEntity.KEY_WX_WEB_URL);
-        miniProgramObject.userName = params.getString(WXShareEntity.KEY_WX_MINI_PROGRAM_ID);
-        miniProgramObject.path = params.getString(WXShareEntity.KEY_WX_MINI_PROGRAM_URL);
-        miniProgramObject.miniprogramType = params.getBoolean(WXShareEntity.KEY_WX_MINI_PROGRAM_TYPE) ? WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE : WXMiniProgramObject.MINIPROGRAM_TYPE_PREVIEW;
+        miniProgramObject.webpageUrl = params.getString(WXShareEntity.SHARE_LINK);
+        miniProgramObject.userName = params.getString(WXShareEntity.SHARE_MINI_APP_ID);
+        miniProgramObject.path = params.getString(WXShareEntity.SHARE_MINI_APP_PATH);
+        miniProgramObject.miniprogramType = params.getBoolean(WXShareEntity.SHARE_MINI_APP_TYPE) ? WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE : WXMiniProgramObject.MINIPROGRAM_TYPE_PREVIEW;
 
         msg.mediaObject = miniProgramObject;
         if (addTitleSummaryAndThumb(msg, params)) return false;
@@ -192,17 +160,17 @@ public class WXShare extends WXSocial implements IShare, IWXAPIEventHandler {
     }
 
     private boolean addTitleSummaryAndThumb(WXMediaMessage msg, Bundle params) {
-        if (params.containsKey(WXShareEntity.KEY_WX_TITLE)) {
-            msg.title = params.getString(WXShareEntity.KEY_WX_TITLE);
+        if (params.containsKey(WXShareEntity.SHARE_TITLE)) {
+            msg.title = params.getString(WXShareEntity.SHARE_TITLE);
         }
 
-        if (params.containsKey(WXShareEntity.KEY_WX_SUMMARY)) {
-            msg.description = params.getString(WXShareEntity.KEY_WX_SUMMARY);
+        if (params.containsKey(WXShareEntity.SHARE_DESC)) {
+            msg.description = params.getString(WXShareEntity.SHARE_DESC);
         }
 
-        boolean isNeedBigThumb = !TextUtils.isEmpty(params.getString(WXShareEntity.KEY_WX_MINI_PROGRAM_URL));
-        if (params.containsKey(WXShareEntity.KEY_WX_IMG_BITMAP)) {
-            Bitmap bitmap = params.getParcelable(WXShareEntity.KEY_WX_IMG_BITMAP);
+        boolean isNeedBigThumb = !TextUtils.isEmpty(params.getString(WXShareEntity.SHARE_MINI_APP_PATH));
+        if (params.containsKey(WXShareEntity.SHARE_IMAGE_BITMAP)) {
+            Bitmap bitmap = params.getParcelable(WXShareEntity.SHARE_IMAGE_BITMAP);
             //thumbData 普通分享图片大小限制32k 小程序封面属于大图128k
             if (isNeedBigThumb) {
                 msg.thumbData = ShareUtils.bigBmpToByteArray(bitmap);
@@ -223,17 +191,25 @@ public class WXShare extends WXSocial implements IShare, IWXAPIEventHandler {
         if (baseResp.getType() == ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX) {
             //分享
             if (baseResp.errCode == BaseResp.ErrCode.ERR_OK) {
-                shareCallback.shareSuccess();
+                if (shareCallback != null) {
+                    shareCallback.shareSuccess();
+                }
             } else {
-                shareCallback.shareCancel();
+                if (shareCallback != null) {
+                    shareCallback.shareCancel();
+                }
             }
         } else if (baseResp.getType() == ConstantsAPI.COMMAND_LAUNCH_WX_MINIPROGRAM) {
             //跳转微信小程序
             if (baseResp.errCode == BaseResp.ErrCode.ERR_OK) {
                 WXLaunchMiniProgram.Resp launchMiniProResp = (WXLaunchMiniProgram.Resp) baseResp;
-                launchCallback.launchSuccess(launchMiniProResp.extMsg);
+                if (launchCallback != null) {
+                    launchCallback.launchSuccess(launchMiniProResp.extMsg);
+                }
             } else {
-                launchCallback.launchCancel();
+                if (launchCallback != null) {
+                    launchCallback.launchCancel();
+                }
             }
         }
     }

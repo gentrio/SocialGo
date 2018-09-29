@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.gentriolee.authgo.core.callback.SocialAuthCallback;
-import com.gentriolee.socialgo.core.SocialType;
+import com.gentriolee.socialgo.core.ISocial;
 import com.gentriolee.socialgo.core.WBSocial;
 import com.sina.weibo.sdk.auth.AccessTokenKeeper;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
@@ -19,7 +19,7 @@ import com.sina.weibo.sdk.auth.sso.SsoHandler;
 public class WBAuth extends WBSocial implements IAuth, WbAuthListener {
 
 
-    private SocialAuthCallback callback;
+    private SocialAuthCallback authCallback;
 
     WBAuth(Activity activity, String appId, String redirectUrl) {
         super(activity, appId, redirectUrl);
@@ -27,8 +27,8 @@ public class WBAuth extends WBSocial implements IAuth, WbAuthListener {
 
     @Override
     public void auth(SocialAuthCallback callback) {
-        callback.setShareType(SocialType.TYPE_WB);
-        this.callback = callback;
+        callback.setTarget(ISocial.TARGET_WB);
+        this.authCallback = callback;
 
         ssoHandler = new SsoHandler(activity);
         ssoHandler.authorize(this);
@@ -38,20 +38,28 @@ public class WBAuth extends WBSocial implements IAuth, WbAuthListener {
     public void onSuccess(Oauth2AccessToken oauth2AccessToken) {
         if (oauth2AccessToken.isSessionValid()) {
             AccessTokenKeeper.writeAccessToken(activity, oauth2AccessToken);
-            callback.authSuccess(oauth2AccessToken.getToken());
+            if (authCallback != null) {
+                authCallback.authSuccess(oauth2AccessToken.getToken());
+            }
         } else {
-            callback.authFail(ErrCode.ERR_SDK_INTERNAL, "");
+            if (authCallback != null) {
+                authCallback.authFail(ErrCode.ERR_SDK_INTERNAL, "");
+            }
         }
     }
 
     @Override
     public void cancel() {
-        callback.authCancel();
+        if (authCallback != null) {
+            authCallback.authCancel();
+        }
     }
 
     @Override
     public void onFailure(WbConnectErrorMessage wbConnectErrorMessage) {
-        callback.authFail(ErrCode.ERR_SDK_INTERNAL, wbConnectErrorMessage.getErrorMessage());
+        if (authCallback != null) {
+            authCallback.authFail(ErrCode.ERR_SDK_INTERNAL, wbConnectErrorMessage.getErrorMessage());
+        }
     }
 
     void onActivityResult(int requestCode, int resultCode, Intent data) {

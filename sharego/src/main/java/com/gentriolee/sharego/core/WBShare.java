@@ -41,7 +41,7 @@ final class WBShare extends WBSocial implements IShare {
 
     @Override
     public void share(SocialShareCallback callback, ShareEntity shareInfo) {
-        callback.setShareType(shareInfo.getType());
+        callback.setShareType(shareInfo.getTarget());
         this.shareCallback = callback;
         //微博未安装时会使用网页版微博 可根据业务自行修改
 //        if (!WbSdk.isWbInstall(activity)) {
@@ -88,29 +88,18 @@ final class WBShare extends WBSocial implements IShare {
 
     private WeiboMultiMessage getShareMessage(Bundle params) {
         WeiboMultiMessage msg = new WeiboMultiMessage();
-        int type = params.getInt(WBShareEntity.KEY_WB_TYPE);
+        int type = params.getInt(WBShareEntity.SHARE_TYPE);
         BaseMediaObject mediaObject = null;
         switch (type) {
-            case WBShareEntity.TYPE_TEXT:
+            case WBShareEntity.SHARE_TYPE_TEXT:
                 msg.textObject = getTextObj(params);
                 mediaObject = msg.textObject;
                 break;
-            case WBShareEntity.TYPE_IMG_TEXT:
+            case WBShareEntity.SHARE_TYPE_IMG:
                 msg.imageObject = getImageObj(params);
-                msg.textObject = getTextObj(params);
                 mediaObject = msg.imageObject;
                 break;
-            case WBShareEntity.TYPE_MULTI_IMAGES:
-                msg.multiImageObject = getMultiImgObj(params);
-                msg.textObject = getTextObj(params);
-                mediaObject = msg.multiImageObject;
-                break;
-            case WBShareEntity.TYPE_VIDEO:
-                msg.videoSourceObject = getVideoObj(params);
-                msg.textObject = getTextObj(params);
-                mediaObject = msg.videoSourceObject;
-                break;
-            case WBShareEntity.TYPE_WEB:
+            case WBShareEntity.SHARE_TYPE_WEB:
                 msg.mediaObject = getWebPageObj(params);
                 msg.textObject = getTextObj(params);
                 mediaObject = msg.mediaObject;
@@ -124,54 +113,23 @@ final class WBShare extends WBSocial implements IShare {
 
     private TextObject getTextObj(Bundle params) {
         TextObject textObj = new TextObject();
-        textObj.text = params.getString(WBShareEntity.KEY_WB_TEXT);
+        textObj.text = params.getString(WBShareEntity.SHARE_TITLE);
         return textObj;
     }
 
     private ImageObject getImageObj(Bundle params) {
         ImageObject imgObj = new ImageObject();
-        if (params.containsKey(WBShareEntity.KEY_WB_IMG_BITMAP)) {//分为本地文件和应用内资源图片
-            Bitmap bitmap = params.getParcelable(WBShareEntity.KEY_WB_IMG_BITMAP);
+        if (params.containsKey(WBShareEntity.SHARE_IMAGE_BITMAP)) {//分为本地文件和应用内资源图片
+            Bitmap bitmap = params.getParcelable(WBShareEntity.SHARE_IMAGE_BITMAP);
             imgObj.setImageObject(bitmap);
         }
         return imgObj;
     }
 
-    private MultiImageObject getMultiImgObj(Bundle params) {
-        MultiImageObject multiImageObject = new MultiImageObject();
-        ArrayList<String> images = params.getStringArrayList(WBShareEntity.KEY_WB_MULTI_IMG);
-        ArrayList<Uri> uris = new ArrayList<>();
-        if (images != null) {
-            for (String image : images) {
-                uris.add(Uri.fromFile(new File(image)));
-            }
-        }
-        multiImageObject.setImageList(uris);
-        if (addTitleSummaryAndThumb(multiImageObject, params)) {
-            return null;
-        }
-        return multiImageObject;
-    }
-
-    private VideoSourceObject getVideoObj(Bundle params) {
-        VideoSourceObject videoSourceObject = new VideoSourceObject();
-        String videoUrl = params.getString(WBShareEntity.KEY_WB_VIDEO_URL);
-        if (!TextUtils.isEmpty(videoUrl)) {
-            videoSourceObject.videoPath = Uri.fromFile(new File(videoUrl));
-        }
-
-        if (params.containsKey(WBShareEntity.KEY_WB_IMG_BITMAP)) {
-            Bitmap bitmap = params.getParcelable(WBShareEntity.KEY_WB_IMG_BITMAP);
-            videoSourceObject.setThumbImage(bitmap);
-        }
-
-        return videoSourceObject;
-    }
-
     private WebpageObject getWebPageObj(Bundle params) {
         WebpageObject webpageObject = new WebpageObject();
         webpageObject.identify = Utility.generateGUID();
-        webpageObject.actionUrl = params.getString(WBShareEntity.KEY_WB_WEB_URL);
+        webpageObject.actionUrl = params.getString(WBShareEntity.SHARE_LINK);
         if (addTitleSummaryAndThumb(webpageObject, params)) {
             return null;
         }
@@ -182,16 +140,16 @@ final class WBShare extends WBSocial implements IShare {
      * 当有设置缩略图但是找不到的时候阻止分享
      */
     private boolean addTitleSummaryAndThumb(BaseMediaObject msg, Bundle params) {
-        if (params.containsKey(WBShareEntity.KEY_WB_TITLE)) {
-            msg.title = params.getString(WBShareEntity.KEY_WB_TITLE);
+        if (params.containsKey(WBShareEntity.SHARE_TITLE)) {
+            msg.title = params.getString(WBShareEntity.SHARE_TITLE);
         }
 
-        if (params.containsKey(WBShareEntity.KEY_WB_SUMMARY)) {
-            msg.description = params.getString(WBShareEntity.KEY_WB_SUMMARY);
+        if (params.containsKey(WBShareEntity.SHARE_DESC)) {
+            msg.description = params.getString(WBShareEntity.SHARE_DESC);
         }
 
-        if (params.containsKey(WBShareEntity.KEY_WB_IMG_BITMAP)) {
-            Bitmap bitmap = params.getParcelable(WBShareEntity.KEY_WB_IMG_BITMAP);
+        if (params.containsKey(WBShareEntity.SHARE_IMAGE_BITMAP)) {
+            Bitmap bitmap = params.getParcelable(WBShareEntity.SHARE_IMAGE_BITMAP);
             msg.thumbData = ShareUtils.smallBmpToByteArray(bitmap);
         }
         return false;

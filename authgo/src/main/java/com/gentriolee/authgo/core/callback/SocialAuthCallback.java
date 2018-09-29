@@ -6,22 +6,22 @@ package com.gentriolee.authgo.core.callback;
 
 public abstract class SocialAuthCallback {
 
-    private int shareType;
+    private int target;
 
     /**
      * 设置授权类型
-     * @param shareType
+     * @param target
      */
-    public void setShareType(int shareType) {
-        this.shareType = shareType;
+    public void setTarget(int target) {
+        this.target = target;
     }
 
     /**
      * 授权类型
      * @return
      */
-    public int getShareType() {
-        return shareType;
+    public int getTarget() {
+        return target;
     }
 
     /**

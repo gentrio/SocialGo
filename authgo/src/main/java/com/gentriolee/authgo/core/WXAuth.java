@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import com.gentriolee.authgo.R;
 import com.gentriolee.authgo.core.callback.SocialAuthCallback;
-import com.gentriolee.socialgo.core.SocialType;
+import com.gentriolee.socialgo.core.ISocial;
 import com.gentriolee.socialgo.core.WXSocial;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
@@ -18,7 +18,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 
 public class WXAuth extends WXSocial implements IAuth, IWXAPIEventHandler {
 
-    private SocialAuthCallback callback;
+    private SocialAuthCallback authCallback;
 
     WXAuth(Activity activity, String appId) {
         super(activity, appId);
@@ -26,11 +26,11 @@ public class WXAuth extends WXSocial implements IAuth, IWXAPIEventHandler {
 
     @Override
     public void auth(SocialAuthCallback callback) {
-        callback.setShareType(SocialType.TYPE_WX);
-        this.callback = callback;
+        callback.setTarget(ISocial.TARGET_WX);
+        this.authCallback = callback;
         if (!iwxapi.isWXAppInstalled()) {
-            if (callback != null) {
-                callback.authFail(ErrCode.ERR_NOT_INSTALLED, getString(R.string.social_uninstall_wx));
+            if (authCallback != null) {
+                authCallback.authFail(ErrCode.ERR_NOT_INSTALLED, getString(R.string.social_uninstall_wx));
             }
             return;
         }
@@ -53,9 +53,13 @@ public class WXAuth extends WXSocial implements IAuth, IWXAPIEventHandler {
             if (baseResp.errCode == BaseResp.ErrCode.ERR_OK) {
                 //授权码
                 String code = ((SendAuth.Resp) baseResp).code;
-                callback.authSuccess(code);
+                if (authCallback != null) {
+                    authCallback.authSuccess(code);
+                }
             } else {
-                callback.authCancel();
+                if (authCallback != null) {
+                    authCallback.authCancel();
+                }
             }
         }
     }

@@ -3,7 +3,6 @@ package com.gentriolee.sharego.core;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.text.TextUtils;
 
 import com.android.dingtalk.share.ddsharemodule.IDDAPIEventHandler;
 import com.android.dingtalk.share.ddsharemodule.message.BaseReq;
@@ -20,8 +19,6 @@ import com.gentriolee.sharego.core.entities.ShareEntity;
 import com.gentriolee.sharego.utils.ShareUtils;
 import com.gentriolee.socialgo.core.DDSocial;
 
-import java.io.File;
-
 /**
  * Created by gentriolee
  */
@@ -36,7 +33,7 @@ public class DDShare extends DDSocial implements IShare, IDDAPIEventHandler {
 
     @Override
     public void share(SocialShareCallback callback, ShareEntity shareInfo) {
-        callback.setShareType(shareInfo.getType());
+        callback.setShareType(shareInfo.getTarget());
         this.shareCallback = callback;
         if (!iddShareApi.isDDAppInstalled()) {
             if (shareCallback != null) {
@@ -61,16 +58,16 @@ public class DDShare extends DDSocial implements IShare, IDDAPIEventHandler {
 
     private DDMediaMessage createMessage(SendMessageToDD.Req req, Bundle params) {
         DDMediaMessage msg = new DDMediaMessage();
-        int type = params.getInt(DDShareEntity.KEY_DD_TYPE);
+        int type = params.getInt(DDShareEntity.SHARE_TYPE);
         boolean success = false;
         switch (type) {
-            case DDShareEntity.TYPE_TEXT:
+            case DDShareEntity.SHARE_TYPE_TEXT:
                 success = addText(req, msg, params);
                 break;
-            case DDShareEntity.TYPE_IMG:
+            case DDShareEntity.SHARE_TYPE_IMG:
                 success = addImage(req, msg, params);
                 break;
-            case DDShareEntity.TYPE_WEB:
+            case DDShareEntity.SHARE_TYPE_WEB:
                 success = addWeb(req, msg, params);
                 break;
         }
@@ -82,15 +79,15 @@ public class DDShare extends DDSocial implements IShare, IDDAPIEventHandler {
 
     private boolean addText(SendMessageToDD.Req req, DDMediaMessage msg, Bundle params) {
         DDTextMessage textObj = new DDTextMessage();
-        textObj.mText = params.getString(DDShareEntity.KEY_DD_TEXT);
+        textObj.mText = params.getString(DDShareEntity.SHARE_TITLE);
 
         msg.mMediaObject = textObj;
         return true;
     }
 
     private boolean addImage(SendMessageToDD.Req req, DDMediaMessage msg, Bundle params) {
-        if (params.containsKey(DDShareEntity.KEY_DD_IMG_BITMAP)) {
-            Bitmap bitmap = params.getParcelable(DDShareEntity.KEY_DD_IMG_BITMAP);
+        if (params.containsKey(DDShareEntity.SHARE_IMAGE_BITMAP)) {
+            Bitmap bitmap = params.getParcelable(DDShareEntity.SHARE_IMAGE_BITMAP);
             msg.mMediaObject = new DDImageMessage(bitmap);
             msg.mThumbData = ShareUtils.smallBmpToByteArray(bitmap);
             return true;
@@ -100,7 +97,7 @@ public class DDShare extends DDSocial implements IShare, IDDAPIEventHandler {
 
     private boolean addWeb(SendMessageToDD.Req req, DDMediaMessage msg, Bundle params) {
         DDWebpageMessage webObj = new DDWebpageMessage();
-        webObj.mUrl = params.getString(DDShareEntity.KEY_DD_WEB_URL);
+        webObj.mUrl = params.getString(DDShareEntity.SHARE_LINK);
 
         msg.mMediaObject = webObj;
         if (addTitleSummaryAndThumb(msg, params)) return false;
@@ -109,16 +106,16 @@ public class DDShare extends DDSocial implements IShare, IDDAPIEventHandler {
     }
 
     private boolean addTitleSummaryAndThumb(DDMediaMessage msg, Bundle params) {
-        if (params.containsKey(DDShareEntity.KEY_DD_TITLE)) {
-            msg.mTitle = params.getString(DDShareEntity.KEY_DD_TITLE);
+        if (params.containsKey(DDShareEntity.SHARE_TITLE)) {
+            msg.mTitle = params.getString(DDShareEntity.SHARE_TITLE);
         }
 
-        if (params.containsKey(DDShareEntity.KEY_DD_SUMMARY)) {
-            msg.mContent = params.getString(DDShareEntity.KEY_DD_SUMMARY);
+        if (params.containsKey(DDShareEntity.SHARE_DESC)) {
+            msg.mContent = params.getString(DDShareEntity.SHARE_DESC);
         }
 
-        if (params.containsKey(DDShareEntity.KEY_DD_IMG_BITMAP)) {
-            Bitmap bitmap = params.getParcelable(DDShareEntity.KEY_DD_IMG_BITMAP);
+        if (params.containsKey(DDShareEntity.SHARE_IMAGE_BITMAP)) {
+            Bitmap bitmap = params.getParcelable(DDShareEntity.SHARE_IMAGE_BITMAP);
             msg.mThumbData = ShareUtils.smallBmpToByteArray(bitmap);
         }
         return false;
@@ -133,9 +130,13 @@ public class DDShare extends DDSocial implements IShare, IDDAPIEventHandler {
     public void onResp(BaseResp baseResp) {
         //只支持分享 暂不支持授权登录
         if (baseResp.mErrCode == BaseResp.ErrCode.ERR_OK) {
-            shareCallback.shareSuccess();
+            if (shareCallback != null) {
+                shareCallback.shareSuccess();
+            }
         } else {
-            shareCallback.shareCancel();
+            if (shareCallback != null) {
+                shareCallback.shareCancel();
+            }
         }
     }
 
