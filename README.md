@@ -17,8 +17,8 @@
 ### Gradle Dependency
 
 ```gradle
-implementation 'com.gentriolee.socialgo:sharego:1.0.0' //分享
-implementation 'com.gentriolee.socialgo:authgo:1.0.0'   //登录
+implementation 'com.gentriolee.socialgo:sharego:1.1.0' //分享
+implementation 'com.gentriolee.socialgo:authgo:1.1.0'   //登录
 ```
 
 ### AndroidManifest.xml配置
