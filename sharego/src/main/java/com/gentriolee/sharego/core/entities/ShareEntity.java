@@ -40,8 +40,8 @@ public class ShareEntity {
      *
      * @param text 分享文本内容
      */
-    public static ShareEntity createTextInfo(@ParamsRequired int shareType, @ParamsRequired String text) {
-        ShareEntity entity = new ShareEntity(shareType);
+    public static ShareEntity createTextInfo(@ParamsRequired int target, @ParamsRequired String text) {
+        ShareEntity entity = new ShareEntity(target);
         addParams(entity.params, SHARE_TYPE, SHARE_TYPE_TEXT);
         addParams(entity.params, SHARE_TITLE, text);
         return entity;
@@ -52,10 +52,10 @@ public class ShareEntity {
      *
      * @param imgBitmap     本地图片地址
      */
-    public static ShareEntity createImageInfo(@ParamsRequired int shareType, @ParamsRequired Bitmap imgBitmap) {
-        ShareEntity entity = new ShareEntity(shareType);
+    public static ShareEntity createImageInfo(@ParamsRequired int target, @ParamsRequired Bitmap imgBitmap) {
+        ShareEntity entity = new ShareEntity(target);
         addParams(entity.params, SHARE_TYPE, SHARE_TYPE_IMG);
-        if (shareType == ISocial.TARGET_QQ || shareType == ISocial.TARGET_QQ_ZONE) {
+        if (target == ISocial.TARGET_QQ || target == ISocial.TARGET_QQ_ZONE) {
             addParams(entity.params, SHARE_IMAGE_BITMAP, saveImgBitmap(imgBitmap));
         } else {
             addParams(entity.params, SHARE_IMAGE_BITMAP, imgBitmap);
@@ -71,14 +71,14 @@ public class ShareEntity {
      * @param summary   网页摘要
      * @param imgBitmap 网页左边图标，本地路径
      */
-    public static ShareEntity createWebInfo(@ParamsRequired int shareType, @ParamsRequired String title, @ParamsRequired String summary,
+    public static ShareEntity createWebInfo(@ParamsRequired int target, @ParamsRequired String title, @ParamsRequired String summary,
                                             @ParamsRequired String webUrl, @ParamsRequired Bitmap imgBitmap) {
-        ShareEntity entity = new ShareEntity(shareType);
+        ShareEntity entity = new ShareEntity(target);
         addParams(entity.params, SHARE_TYPE, SHARE_TYPE_WEB);
         addParams(entity.params, SHARE_LINK, webUrl);
         addParams(entity.params, SHARE_TITLE, title);
         addParams(entity.params, SHARE_DESC, summary);
-        if (shareType == ISocial.TARGET_QQ || shareType == ISocial.TARGET_QQ_ZONE) {
+        if (target == ISocial.TARGET_QQ || target == ISocial.TARGET_QQ_ZONE) {
             addParams(entity.params, SHARE_IMAGE_BITMAP, saveImgBitmap(imgBitmap));
         } else {
             addParams(entity.params, SHARE_IMAGE_BITMAP, imgBitmap);

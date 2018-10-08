@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -14,47 +15,104 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <LinearLayout
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="vertical"
+    <Button
+        android:id="@+id/btn_wechat_share_text"
+        android:layout_marginTop="40dp"
+        android:text="微信分享文字"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <HorizontalScrollView
+        android:scrollbars="none"
+        android:layout_marginTop="40dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <RadioGroup
+            android:id="@+id/rg_type"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/wechat"
-            android:text="微信"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <RadioButton
+                android:id="@+id/rb_text"
+                android:text="文字"
+                android:checked="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-        <Button
-            android:id="@+id/friend_circle"
-            android:text="朋友圈"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <RadioButton
+                android:id="@+id/rb_img"
+                android:text="图片"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-        <Button
-            android:id="@+id/qq"
-            android:text="QQ"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <RadioButton
+                android:id="@+id/rb_link"
+                android:text="链接"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-        <Button
-            android:id="@+id/qzone"
-            android:text="QQ空间"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <RadioButton
+                android:id="@+id/rb_mini_app"
+                android:text="小程序"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RadioGroup>
+    </HorizontalScrollView>
 
-        <Button
-            android:id="@+id/weibo"
-            android:text="微博"
+    <HorizontalScrollView
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RadioGroup
+            android:id="@+id/rg_target"
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/ding_talk"
-            android:text="钉钉"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-</FrameLayout>
+            <RadioButton
+                android:id="@+id/rb_wechat"
+                android:text="微信"
+                android:checked="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                android:id="@+id/rb_friend_circle"
+                android:text="朋友圈"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                android:id="@+id/rb_qq"
+                android:text="QQ"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                android:id="@+id/rb_qq_zone"
+                android:text="QQ空间"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                android:id="@+id/rb_weibo"
+                android:text="微博"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                android:id="@+id/rb_ding_talk"
+                android:text="钉钉"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RadioGroup>
+    </HorizontalScrollView>
+
+    <Button
+        android:id="@+id/btn_share"
+        android:layout_marginTop="10dp"
+        android:text="分享"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>
