@@ -31,11 +31,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    if (IS_LOCAL.toBoolean()) {
-        implementation project(':sharego')
-        implementation project(':authgo')
-    } else {
-        implementation "com.gentriolee.socialgo:sharego:${VERSION_NAME}"
-        implementation "com.gentriolee.socialgo:authgo:${VERSION_NAME}"
-    }
+    implementation project(':sharego')
+    implementation project(':authgo')
 }
