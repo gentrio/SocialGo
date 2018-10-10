@@ -122,7 +122,6 @@ public class DDShare extends DDSocial implements IShare, IDDAPIEventHandler {
 
     @Override
     public void onResp(BaseResp baseResp) {
-        //只支持分享 暂不支持授权登录
         if (baseResp.mErrCode == BaseResp.ErrCode.ERR_OK) {
             if (socialCallback instanceof SocialShareCallback) {
                 ((SocialShareCallback) socialCallback).success();
