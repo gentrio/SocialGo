@@ -16,15 +16,13 @@ public class WBSocial extends BaseSocial{
 
     private static final String SCOPE = "email";
 
-    protected Activity activity;
     protected SsoHandler ssoHandler;
     protected WbShareHandler shareHandler;
     protected String redirectUrl;
 
     protected WBSocial(Activity activity, String appId, String redirectUrl) {
-        super(appId);
+        super(activity, appId);
         this.redirectUrl = redirectUrl;
-        this.activity = activity;
 
         if (TextUtils.isEmpty(appId) || TextUtils.isEmpty(redirectUrl)) {
             throw new RuntimeException("WeBo's appId or redirectUrl is empty!");

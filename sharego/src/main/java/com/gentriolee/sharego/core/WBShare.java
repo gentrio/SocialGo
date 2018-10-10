@@ -32,7 +32,6 @@ import java.util.ArrayList;
 
 final class WBShare extends WBSocial implements IShare {
 
-    private SocialShareCallback shareCallback;
     private WbShareCallback wbShareCallback;
 
     WBShare(Activity activity, String appId, String redirectUrl) {
@@ -42,7 +41,7 @@ final class WBShare extends WBSocial implements IShare {
     @Override
     public void share(SocialShareCallback callback, ShareEntity shareInfo) {
         callback.setTarget(shareInfo.getTarget());
-        this.shareCallback = callback;
+        socialCallback = callback;
         //微博未安装时会使用网页版微博 可根据业务自行修改
 //        if (!WbSdk.isWbInstall(activity)) {
 //            if (callback != null) {
@@ -65,22 +64,22 @@ final class WBShare extends WBSocial implements IShare {
         wbShareCallback = new WbShareCallback() {
             @Override
             public void onWbShareSuccess() {
-                if (shareCallback != null) {
-                    shareCallback.success();
+                if (socialCallback instanceof SocialShareCallback) {
+                    ((SocialShareCallback) socialCallback).success();
                 }
             }
 
             @Override
             public void onWbShareCancel() {
-                if (shareCallback != null && activity != null) {
-                    shareCallback.cancel();
+                if (socialCallback != null && activity != null) {
+                    socialCallback.cancel();
                 }
             }
 
             @Override
             public void onWbShareFail() {
-                if (shareCallback != null && activity != null) {
-                    shareCallback.fail(ErrCode.ERR_SDK_INTERNAL, "");
+                if (socialCallback != null && activity != null) {
+                    socialCallback.fail(ErrCode.ERR_SDK_INTERNAL, "");
                 }
             }
         };

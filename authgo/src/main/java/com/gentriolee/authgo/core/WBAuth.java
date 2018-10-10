@@ -38,15 +38,8 @@ public class WBAuth extends WBSocial implements IAuth, WbAuthListener {
 
     private static final String BASE_URL = "https://api.weibo.com/2/users/show.json";
 
-    private SocialCallback socialCallback;
-    private OkHttpClient okHttpClient;
-
     WBAuth(Activity activity, String appId, String redirectUrl) {
         super(activity, appId, redirectUrl);
-
-        this.okHttpClient = new OkHttpClient.Builder().retryOnConnectionFailure(true)
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS).build();
     }
 
     @Override

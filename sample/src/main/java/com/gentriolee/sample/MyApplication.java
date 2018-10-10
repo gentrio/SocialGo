@@ -25,7 +25,7 @@ public class MyApplication extends Application {
                 .setQqAppId("")
                 .setWxAppId("", "")
                 .setWbAppId("", "")
-                .setDdAppId("")
+                .setDdAppId("", "")
                 .build();
         SocialConfig.init(getApplicationContext(), builder);
     }

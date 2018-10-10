@@ -39,15 +39,8 @@ public class WXAuth extends WXSocial implements IAuth, IWXAPIEventHandler {
 
     private static final String BASE_URL = "https://api.weixin.qq.com/sns/";
 
-    private SocialCallback socialCallback;
-    private OkHttpClient okHttpClient;
-
-    WXAuth(Activity activity, String appId,String secretId) {
+    WXAuth(Activity activity, String appId, String secretId) {
         super(activity, appId, secretId);
-
-        this.okHttpClient = new OkHttpClient.Builder().retryOnConnectionFailure(true)
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS).build();
     }
 
     @Override
@@ -67,18 +60,7 @@ public class WXAuth extends WXSocial implements IAuth, IWXAPIEventHandler {
         auth(callback);
     }
 
-    private boolean uninstallInterrupt(SocialCallback callback) {
-        callback.setTarget(ISocial.TARGET_WX);
-        socialCallback = callback;
-        if (!iwxapi.isWXAppInstalled()) {
-            if (socialCallback != null) {
-                socialCallback.fail(ErrCode.ERR_NOT_INSTALLED, getString(R.string.social_uninstall_wx));
-            }
-            return true;
-        }
 
-        return false;
-    }
 
     @Override
     public void onReq(BaseReq baseReq) {

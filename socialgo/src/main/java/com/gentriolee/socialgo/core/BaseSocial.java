@@ -1,8 +1,10 @@
 package com.gentriolee.socialgo.core;
 
+import android.app.Activity;
 import android.support.annotation.StringRes;
 
 import com.gentriolee.socialgo.config.SocialConfig;
+import com.gentriolee.socialgo.core.callback.SocialCallback;
 
 /**
  * Create by gentriolee
@@ -10,9 +12,12 @@ import com.gentriolee.socialgo.config.SocialConfig;
 
 public class BaseSocial {
 
+    protected SocialCallback socialCallback;
+    protected Activity activity;
     protected String appId;
 
-    protected BaseSocial(String appId) {
+    protected BaseSocial(Activity activity, String appId) {
+        this.activity = activity;
         this.appId = appId;
     }
 

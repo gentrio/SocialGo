@@ -128,7 +128,7 @@ public class ShareGo implements ISocial {
      * @param callback
      */
     public void shareDD(Activity activity, ShareEntity shareInfo, SocialShareCallback callback) {
-        ddShare = new DDShare(activity, builder.getDdAppId());
+        ddShare = new DDShare(activity, builder.getDdAppId(), builder.getDdSecretId());
         ddShare.share(callback, shareInfo);
     }
     //</editor-fold>

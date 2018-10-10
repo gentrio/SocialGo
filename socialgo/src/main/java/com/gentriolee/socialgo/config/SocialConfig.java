@@ -73,6 +73,7 @@ public class SocialConfig {
         private String wbRedirectUrl;
 
         private String ddAppId;
+        private String ddSecretId;
 
         public String getQqAppId() {
             return qqAppId;
@@ -115,9 +116,14 @@ public class SocialConfig {
             return ddAppId;
         }
 
-        public Builder setDdAppId(String ddAppId) {
+        public Builder setDdAppId(String ddAppId, String ddSecretId) {
             this.ddAppId = ddAppId;
+            this.ddSecretId = ddSecretId;
             return this;
+        }
+
+        public String getDdSecretId() {
+            return ddSecretId;
         }
 
         public Builder build() {

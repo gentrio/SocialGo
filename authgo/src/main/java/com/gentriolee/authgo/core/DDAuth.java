@@ -18,19 +18,24 @@ import com.gentriolee.socialgo.core.callback.SocialCallback;
 @Unsupported
 public class DDAuth extends DDSocial implements IAuth, IDDAPIEventHandler {
 
-    DDAuth(Activity activity, String appId) {
-        super(activity, appId);
+
+    DDAuth(Activity activity, String appId, String secretId) {
+        super(activity, appId, secretId);
     }
 
 
     @Override
     public void auth(SocialCallback callback) {
+        if (uninstallInterrupt(callback)) {
+            return;
+        }
+
 
     }
 
     @Override
     public void login(SocialCallback callback) {
-
+        auth(callback);
     }
 
     @Override

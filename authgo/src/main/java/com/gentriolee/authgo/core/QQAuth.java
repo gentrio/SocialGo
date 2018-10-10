@@ -9,18 +9,14 @@ import com.gentriolee.authgo.core.callback.SocialAuthCallback;
 import com.gentriolee.authgo.core.callback.SocialLoginCallback;
 import com.gentriolee.authgo.core.entities.BaseToken;
 import com.gentriolee.authgo.core.entities.QQUser;
-import com.gentriolee.authgo.core.entities.WBUser;
 import com.gentriolee.socialgo.core.ISocial;
 import com.gentriolee.socialgo.core.QQSocial;
 import com.gentriolee.socialgo.core.callback.SocialCallback;
-import com.google.gson.Gson;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
 import org.json.JSONObject;
-
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -28,7 +24,6 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -40,15 +35,8 @@ public class QQAuth extends QQSocial implements IAuth, IUiListener {
 
     private static final String BASE_URL = "https://graph.qq.com/user/get_user_info";
 
-    private SocialCallback socialCallback;
-    private OkHttpClient okHttpClient;
-
     QQAuth(Activity activity, String appId) {
         super(activity, appId);
-
-        this.okHttpClient = new OkHttpClient.Builder().retryOnConnectionFailure(true)
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS).build();
     }
 
     @Override
@@ -69,19 +57,6 @@ public class QQAuth extends QQSocial implements IAuth, IUiListener {
     @Override
     public void login(SocialCallback callback) {
         auth(callback);
-    }
-
-    private boolean uninstallInterrupt(SocialCallback callback) {
-        callback.setTarget(ISocial.TARGET_QQ);
-        socialCallback = callback;
-        if (!tencent.isQQInstalled(activity)) {
-            if (socialCallback != null) {
-                socialCallback.fail(ErrCode.ERR_NOT_INSTALLED, getString(R.string.social_uninstall_qq));
-            }
-            return true;
-        }
-
-        return false;
     }
 
     @Override

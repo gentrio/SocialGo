@@ -38,4 +38,13 @@ public interface ISocial {
     void onActivityResult(int requestCode, int resultCode, Intent data);
 
     void onNewIntent(Intent intent);
+
+    interface ErrCode {
+
+        //SDK内部调用错误
+        int ERR_SDK_INTERNAL = -1;
+
+        //未安装应用
+        int ERR_NOT_INSTALLED = 100;
+    }
 }

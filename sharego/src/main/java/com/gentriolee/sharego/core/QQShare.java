@@ -12,6 +12,7 @@ import com.gentriolee.sharego.core.entities.QQShareEntity;
 import com.gentriolee.sharego.core.entities.ShareEntity;
 import com.gentriolee.socialgo.core.ISocial;
 import com.gentriolee.socialgo.core.QQSocial;
+import com.gentriolee.socialgo.core.callback.SocialCallback;
 import com.tencent.connect.share.QzonePublish;
 import com.tencent.connect.share.QzoneShare;
 import com.tencent.tauth.IUiListener;
@@ -35,7 +36,6 @@ import static com.tencent.connect.share.QQShare.SHARE_TO_QQ_TYPE_IMAGE;
 
 public class QQShare extends QQSocial implements IShare {
 
-    private SocialShareCallback shareCallback;
     private IUiListener shareListener;
 
     QQShare(Activity activity, String appId) {
@@ -43,11 +43,11 @@ public class QQShare extends QQSocial implements IShare {
     }
 
     private void initShareListener() {
-        shareListener = new NormalUIListener(activity, shareCallback) {
+        shareListener = new NormalUIListener(activity, socialCallback) {
             @Override
             public void onComplete(Object o) {
-                if (shareCallback != null) {
-                    shareCallback.success();
+                if (socialCallback instanceof SocialShareCallback) {
+                    ((SocialShareCallback) socialCallback).success();
                 }
             }
         };
@@ -58,14 +58,10 @@ public class QQShare extends QQSocial implements IShare {
      */
     @Override
     public void share(SocialShareCallback callback, ShareEntity shareInfo) {
-        callback.setTarget(shareInfo.getTarget());
-        this.shareCallback = callback;
-        if (!tencent.isQQInstalled(activity)) {
-            if (callback != null) {
-                callback.fail(ErrCode.ERR_NOT_INSTALLED, getString(R.string.social_uninstall_qq));
-            }
+        if (uninstallInterrupt(callback)) {
             return;
         }
+
         initShareListener();
         Bundle qShareParams = getQShareParams(shareInfo);
         if (shareInfo.getTarget() == ISocial.TARGET_QQ) {
@@ -187,10 +183,10 @@ public class QQShare extends QQSocial implements IShare {
     }
 
     private abstract static class NormalUIListener implements IUiListener {
-        private SocialShareCallback callback;
+        private SocialCallback callback;
         private Context context;
 
-        NormalUIListener(Context context, SocialShareCallback callback) {
+        NormalUIListener(Context context, SocialCallback callback) {
             this.context = context;
             this.callback = callback;
         }

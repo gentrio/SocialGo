@@ -25,25 +25,19 @@ import com.gentriolee.socialgo.core.DDSocial;
 
 public class DDShare extends DDSocial implements IShare, IDDAPIEventHandler {
 
-    private SocialShareCallback shareCallback;
-
-    DDShare(Activity activity, String appId) {
-        super(activity, appId);
+    DDShare(Activity activity, String appId, String secretId) {
+        super(activity, appId, secretId);
     }
 
     @Override
     public void share(SocialShareCallback callback, ShareEntity shareInfo) {
-        callback.setTarget(shareInfo.getTarget());
-        this.shareCallback = callback;
-        if (!iddShareApi.isDDAppInstalled()) {
-            if (shareCallback != null) {
-                callback.fail(ErrCode.ERR_NOT_INSTALLED, getString(R.string.social_uninstall_dd));
-            }
+        if (uninstallInterrupt(callback)) {
             return;
         }
+
         if (!iddShareApi.isDDSupportAPI()) {
-            if (shareCallback != null) {
-                callback.fail(ErrCode.ERR_LOW_VERSION, getString(R.string.share_dd_version_low_error));
+            if (socialCallback != null) {
+                socialCallback.fail(ErrCode.ERR_LOW_VERSION, getString(R.string.share_dd_version_low_error));
             }
             return;
         }
@@ -130,12 +124,12 @@ public class DDShare extends DDSocial implements IShare, IDDAPIEventHandler {
     public void onResp(BaseResp baseResp) {
         //只支持分享 暂不支持授权登录
         if (baseResp.mErrCode == BaseResp.ErrCode.ERR_OK) {
-            if (shareCallback != null) {
-                shareCallback.success();
+            if (socialCallback instanceof SocialShareCallback) {
+                ((SocialShareCallback) socialCallback).success();
             }
         } else {
-            if (shareCallback != null) {
-                shareCallback.cancel();
+            if (socialCallback != null) {
+                socialCallback.cancel();
             }
         }
     }

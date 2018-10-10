@@ -25,6 +25,7 @@ public class AuthGo implements ISocial {
     private WXAuth wxAuth;
     private WBAuth wbAuth;
     private QQAuth qqAuth;
+    private DDAuth ddAuth;
 
     private AuthGo() {
         builder = SocialConfig.getInstance().getBuilder();
@@ -76,6 +77,16 @@ public class AuthGo implements ISocial {
     }
 
     /**
+     * 钉钉授权
+     * @param activity
+     * @param callback
+     */
+    public void authDD(Activity activity, SocialAuthCallback callback) {
+        ddAuth = new DDAuth(activity, builder.getDdAppId(), builder.getDdSecretId());
+        ddAuth.auth(callback);
+    }
+
+    /**
      * 微信登录
      * @param activity
      * @param callback
@@ -103,6 +114,16 @@ public class AuthGo implements ISocial {
     public void loginQQ(Activity activity, SocialLoginCallback callback) {
         qqAuth = new QQAuth(activity, builder.getQqAppId());
         qqAuth.login(callback);
+    }
+
+    /**
+     * 钉钉登录
+     * @param activity
+     * @param callback
+     */
+    public void loginDD(Activity activity, SocialAuthCallback callback) {
+        ddAuth = new DDAuth(activity, builder.getDdAppId(), builder.getDdSecretId());
+        ddAuth.login(callback);
     }
     //</editor-fold>
 
