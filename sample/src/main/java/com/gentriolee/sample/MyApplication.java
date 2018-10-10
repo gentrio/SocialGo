@@ -23,9 +23,8 @@ public class MyApplication extends Application {
     private void initSocial() {
         SocialConfig.Builder builder = new SocialConfig.Builder()
                 .setQqAppId("")
-                .setWxAppId("")
-                .setWbAppId("")
-                .setWbRedirectUrl("")
+                .setWxAppId("", "")
+                .setWbAppId("", "")
                 .setDdAppId("")
                 .build();
         SocialConfig.init(getApplicationContext(), builder);

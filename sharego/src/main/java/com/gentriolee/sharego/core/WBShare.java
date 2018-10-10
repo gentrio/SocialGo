@@ -41,7 +41,7 @@ final class WBShare extends WBSocial implements IShare {
 
     @Override
     public void share(SocialShareCallback callback, ShareEntity shareInfo) {
-        callback.setShareType(shareInfo.getTarget());
+        callback.setTarget(shareInfo.getTarget());
         this.shareCallback = callback;
         //微博未安装时会使用网页版微博 可根据业务自行修改
 //        if (!WbSdk.isWbInstall(activity)) {
@@ -66,21 +66,21 @@ final class WBShare extends WBSocial implements IShare {
             @Override
             public void onWbShareSuccess() {
                 if (shareCallback != null) {
-                    shareCallback.shareSuccess();
+                    shareCallback.success();
                 }
             }
 
             @Override
             public void onWbShareCancel() {
                 if (shareCallback != null && activity != null) {
-                    shareCallback.shareCancel();
+                    shareCallback.cancel();
                 }
             }
 
             @Override
             public void onWbShareFail() {
                 if (shareCallback != null && activity != null) {
-                    shareCallback.shareFail(ErrCode.ERR_SDK_INTERNAL, "");
+                    shareCallback.fail(ErrCode.ERR_SDK_INTERNAL, "");
                 }
             }
         };

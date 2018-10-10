@@ -67,6 +67,7 @@ public class SocialConfig {
         private String qqAppId;
 
         private String wxAppId;
+        private String wxSecretId;
 
         private String wbAppId;
         private String wbRedirectUrl;
@@ -86,27 +87,28 @@ public class SocialConfig {
             return wxAppId;
         }
 
-        public Builder setWxAppId(String wxAppId) {
+        public Builder setWxAppId(String wxAppId,String wxSecretId) {
             this.wxAppId = wxAppId;
+            this.wxSecretId = wxSecretId;
             return this;
+        }
+
+        public String getWxSecretId() {
+            return wxSecretId;
         }
 
         public String getWbAppId() {
             return wbAppId;
         }
 
-        public Builder setWbAppId(String wbAppId) {
+        public Builder setWbAppId(String wbAppId, String wbRedirectUrl) {
             this.wbAppId = wbAppId;
+            this.wbRedirectUrl = wbRedirectUrl;
             return this;
         }
 
         public String getWbRedirectUrl() {
             return wbRedirectUrl;
-        }
-
-        public Builder setWbRedirectUrl(String wbRedirectUrl) {
-            this.wbRedirectUrl = wbRedirectUrl;
-            return this;
         }
 
         public String getDdAppId() {

@@ -14,8 +14,11 @@ public class WXSocial extends BaseSocial{
 
     protected Activity activity;
     protected IWXAPI iwxapi;
+    protected String secretId;
 
-    protected WXSocial(Activity activity, String appId) {
+    protected WXSocial(Activity activity, String appId, String secretId) {
+        super(appId);
+        this.secretId = secretId;
         this.activity = activity;
 
         if (TextUtils.isEmpty(appId)) {

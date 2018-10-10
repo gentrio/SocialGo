@@ -47,7 +47,7 @@ public class QQShare extends QQSocial implements IShare {
             @Override
             public void onComplete(Object o) {
                 if (shareCallback != null) {
-                    shareCallback.shareSuccess();
+                    shareCallback.success();
                 }
             }
         };
@@ -58,11 +58,11 @@ public class QQShare extends QQSocial implements IShare {
      */
     @Override
     public void share(SocialShareCallback callback, ShareEntity shareInfo) {
-        shareCallback.setShareType(shareInfo.getTarget());
+        callback.setTarget(shareInfo.getTarget());
         this.shareCallback = callback;
         if (!tencent.isQQInstalled(activity)) {
             if (callback != null) {
-                callback.shareFail(ErrCode.ERR_NOT_INSTALLED, getString(R.string.social_uninstall_qq));
+                callback.fail(ErrCode.ERR_NOT_INSTALLED, getString(R.string.social_uninstall_qq));
             }
             return;
         }
@@ -198,14 +198,14 @@ public class QQShare extends QQSocial implements IShare {
         @Override
         public void onError(UiError uiError) {
             if (callback != null) {
-                callback.shareFail(ErrCode.ERR_SDK_INTERNAL, uiError.errorMessage);
+                callback.fail(ErrCode.ERR_SDK_INTERNAL, uiError.errorMessage);
             }
         }
 
         @Override
         public void onCancel() {
             if (callback != null && context != null) {
-                callback.shareCancel();
+                callback.cancel();
             }
         }
     }

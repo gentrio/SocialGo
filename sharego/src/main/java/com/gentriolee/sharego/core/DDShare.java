@@ -33,17 +33,17 @@ public class DDShare extends DDSocial implements IShare, IDDAPIEventHandler {
 
     @Override
     public void share(SocialShareCallback callback, ShareEntity shareInfo) {
-        callback.setShareType(shareInfo.getTarget());
+        callback.setTarget(shareInfo.getTarget());
         this.shareCallback = callback;
         if (!iddShareApi.isDDAppInstalled()) {
             if (shareCallback != null) {
-                callback.shareFail(ErrCode.ERR_NOT_INSTALLED, getString(R.string.social_uninstall_dd));
+                callback.fail(ErrCode.ERR_NOT_INSTALLED, getString(R.string.social_uninstall_dd));
             }
             return;
         }
         if (!iddShareApi.isDDSupportAPI()) {
             if (shareCallback != null) {
-                callback.shareFail(ErrCode.ERR_LOW_VERSION, getString(R.string.share_dd_version_low_error));
+                callback.fail(ErrCode.ERR_LOW_VERSION, getString(R.string.share_dd_version_low_error));
             }
             return;
         }
@@ -131,11 +131,11 @@ public class DDShare extends DDSocial implements IShare, IDDAPIEventHandler {
         //只支持分享 暂不支持授权登录
         if (baseResp.mErrCode == BaseResp.ErrCode.ERR_OK) {
             if (shareCallback != null) {
-                shareCallback.shareSuccess();
+                shareCallback.success();
             }
         } else {
             if (shareCallback != null) {
-                shareCallback.shareCancel();
+                shareCallback.cancel();
             }
         }
     }

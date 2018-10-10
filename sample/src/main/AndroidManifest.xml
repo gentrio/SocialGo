@@ -10,6 +10,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- 适配小米MIX，加了这行小米MIX会认为应用适配了全面屏，否则默认不给打开全面屏, 2.1是google推荐 -->
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1"/>
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,7 +35,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
 
-                <data android:scheme="tencent********"/>
+                <data android:scheme="tencent1106878314"/>
             </intent-filter>
         </activity>
         <activity

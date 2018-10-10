@@ -19,8 +19,11 @@ public class WBSocial extends BaseSocial{
     protected Activity activity;
     protected SsoHandler ssoHandler;
     protected WbShareHandler shareHandler;
+    protected String redirectUrl;
 
     protected WBSocial(Activity activity, String appId, String redirectUrl) {
+        super(appId);
+        this.redirectUrl = redirectUrl;
         this.activity = activity;
 
         if (TextUtils.isEmpty(appId) || TextUtils.isEmpty(redirectUrl)) {

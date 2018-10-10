@@ -15,6 +15,7 @@ public class DDSocial extends BaseSocial{
     protected IDDShareApi iddShareApi;
 
     protected DDSocial(Activity activity, String appId) {
+        super(appId);
         this.activity = activity;
 
         if (TextUtils.isEmpty(appId)) {

@@ -34,17 +34,17 @@ public class WXShare extends WXSocial implements IShare, IWXAPIEventHandler {
     private SocialShareCallback shareCallback;
     private SocialLaunchCallback launchCallback;
 
-    WXShare(Activity activity, String appId) {
-        super(activity, appId);
+    WXShare(Activity activity, String appId, String secretId) {
+        super(activity, appId, secretId);
     }
 
     @Override
     public void share(SocialShareCallback callback, ShareEntity shareInfo) {
-        callback.setShareType(shareInfo.getTarget());
+        callback.setTarget(shareInfo.getTarget());
         this.shareCallback = callback;
         if (!iwxapi.isWXAppInstalled()) {
             if (shareCallback != null) {
-                shareCallback.shareFail(ErrCode.ERR_NOT_INSTALLED, getString(R.string.social_uninstall_wx));
+                shareCallback.fail(ErrCode.ERR_NOT_INSTALLED, getString(R.string.social_uninstall_wx));
             }
             return;
         }
@@ -52,7 +52,7 @@ public class WXShare extends WXSocial implements IShare, IWXAPIEventHandler {
         boolean isTimeLine = shareInfo.getTarget() == ShareGo.TARGET_WX_TIMELINE;
         if (isTimeLine && iwxapi.getWXAppSupportAPI() < 0x21020001) {
             if (shareCallback != null) {
-                shareCallback.shareFail(ErrCode.ERR_LOW_VERSION, getString(R.string.share_wx_version_low_error));
+                shareCallback.fail(ErrCode.ERR_LOW_VERSION, getString(R.string.share_wx_version_low_error));
             }
             return;
         }
@@ -192,11 +192,11 @@ public class WXShare extends WXSocial implements IShare, IWXAPIEventHandler {
             //分享
             if (baseResp.errCode == BaseResp.ErrCode.ERR_OK) {
                 if (shareCallback != null) {
-                    shareCallback.shareSuccess();
+                    shareCallback.success();
                 }
             } else {
                 if (shareCallback != null) {
-                    shareCallback.shareCancel();
+                    shareCallback.cancel();
                 }
             }
         } else if (baseResp.getType() == ConstantsAPI.COMMAND_LAUNCH_WX_MINIPROGRAM) {

@@ -1,6 +1,8 @@
 package com.gentriolee.authgo.core;
 
 import com.gentriolee.authgo.core.callback.SocialAuthCallback;
+import com.gentriolee.authgo.core.callback.SocialLoginCallback;
+import com.gentriolee.socialgo.core.callback.SocialCallback;
 
 /**
  * Created by gentriolee
@@ -8,7 +10,9 @@ import com.gentriolee.authgo.core.callback.SocialAuthCallback;
 
 public interface IAuth {
 
-    void auth(SocialAuthCallback callback);
+    void auth(SocialCallback callback);
+
+    void login(SocialCallback callback);
 
     interface ErrCode {
 

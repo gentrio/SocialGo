@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import com.gentriolee.socialgo.config.SocialConfig;
 import com.gentriolee.socialgo.core.SocialGo;
-import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.openapi.IWXAPI;

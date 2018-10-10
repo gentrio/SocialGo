@@ -84,7 +84,7 @@ public class ShareGo implements ISocial {
      * @param callback
      */
     public void shareWX(Activity activity, ShareEntity shareInfo, SocialShareCallback callback) {
-        wxShare = new WXShare(activity, builder.getWxAppId());
+        wxShare = new WXShare(activity, builder.getWxAppId(), builder.getWxSecretId());
         wxShare.share(callback, shareInfo);
     }
 
@@ -95,7 +95,7 @@ public class ShareGo implements ISocial {
      * @param callback
      */
     public void launchWX(Activity activity, WXLaunchEntity wxLaunchEntity, SocialLaunchCallback callback) {
-        wxShare = new WXShare(activity, builder.getWxAppId());
+        wxShare = new WXShare(activity, builder.getWxAppId(), builder.getWxSecretId());
         wxShare.launch(callback, wxLaunchEntity);
     }
 

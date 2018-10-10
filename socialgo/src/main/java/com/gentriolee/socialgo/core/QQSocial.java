@@ -15,6 +15,7 @@ public class QQSocial extends BaseSocial{
     protected Tencent tencent;
 
     protected QQSocial(Activity activity, String appId) {
+        super(appId);
         this.activity = activity;
 
         if (TextUtils.isEmpty(appId)) {

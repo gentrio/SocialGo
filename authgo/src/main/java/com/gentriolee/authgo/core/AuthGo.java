@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.gentriolee.authgo.core.callback.SocialAuthCallback;
+import com.gentriolee.authgo.core.callback.SocialLoginCallback;
 import com.gentriolee.socialgo.annotation.Unsupported;
 import com.gentriolee.socialgo.config.SocialConfig;
 import com.gentriolee.socialgo.core.ISocial;
@@ -45,17 +46,17 @@ public class AuthGo implements ISocial {
 
     //<editor-fold desc="授权登录的方式">
     /**
-     * 微信登录
+     * 微信授权
      * @param activity
      * @param callback
      */
     public void authWX(Activity activity, SocialAuthCallback callback) {
-        wxAuth = new WXAuth(activity, builder.getWxAppId());
+        wxAuth = new WXAuth(activity, builder.getWxAppId(), builder.getWxSecretId());
         wxAuth.auth(callback);
     }
 
     /**
-     * 微博登录
+     * 微博授权
      * @param activity
      * @param callback
      */
@@ -65,13 +66,43 @@ public class AuthGo implements ISocial {
     }
 
     /**
-     * QQ登录
+     * QQ授权
      * @param activity
      * @param callback
      */
     public void authQQ(Activity activity, SocialAuthCallback callback) {
         qqAuth = new QQAuth(activity, builder.getQqAppId());
         qqAuth.auth(callback);
+    }
+
+    /**
+     * 微信登录
+     * @param activity
+     * @param callback
+     */
+    public void loginWX(Activity activity, SocialLoginCallback callback) {
+        wxAuth = new WXAuth(activity, builder.getWxAppId(), builder.getWxSecretId());
+        wxAuth.login(callback);
+    }
+
+    /**
+     * 微博登录
+     * @param activity
+     * @param callback
+     */
+    public void loginWB(Activity activity, SocialLoginCallback callback) {
+        wbAuth = new WBAuth(activity, builder.getWbAppId(), builder.getWbRedirectUrl());
+        wbAuth.login(callback);
+    }
+
+    /**
+     * QQ登录
+     * @param activity
+     * @param callback
+     */
+    public void loginQQ(Activity activity, SocialLoginCallback callback) {
+        qqAuth = new QQAuth(activity, builder.getQqAppId());
+        qqAuth.login(callback);
     }
     //</editor-fold>
 
