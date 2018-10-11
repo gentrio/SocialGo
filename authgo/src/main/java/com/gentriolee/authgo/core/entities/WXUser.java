@@ -70,7 +70,7 @@ public class WXUser extends BaseUser {
                 ", country='" + country + '\'' +
                 ", province='" + province + '\'' +
                 ", unionid='" + unionid + '\'' +
-                ", baseToken=" + baseToken +
+                ", authResult=" + authResult +
                 ", nickName='" + nickName + '\'' +
                 ", sex=" + sex +
                 ", headImageUrl='" + headImageUrl + '\'' +

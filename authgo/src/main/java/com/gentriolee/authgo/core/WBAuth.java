@@ -6,9 +6,8 @@ import android.content.Intent;
 
 import com.gentriolee.authgo.core.callback.SocialAuthCallback;
 import com.gentriolee.authgo.core.callback.SocialLoginCallback;
-import com.gentriolee.authgo.core.entities.BaseToken;
+import com.gentriolee.authgo.core.entities.AuthResult;
 import com.gentriolee.authgo.core.entities.WBUser;
-import com.gentriolee.authgo.core.entities.WXUser;
 import com.gentriolee.socialgo.core.ISocial;
 import com.gentriolee.socialgo.core.WBSocial;
 import com.gentriolee.socialgo.core.callback.SocialCallback;
@@ -18,15 +17,12 @@ import com.sina.weibo.sdk.auth.WbAuthListener;
 import com.sina.weibo.sdk.auth.WbConnectErrorMessage;
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 
-import java.util.concurrent.TimeUnit;
-
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -60,11 +56,11 @@ public class WBAuth extends WBSocial implements IAuth, WbAuthListener {
     public void onSuccess(Oauth2AccessToken oauth2AccessToken) {
         if (oauth2AccessToken.isSessionValid()) {
             AccessTokenKeeper.writeAccessToken(activity, oauth2AccessToken);
+            AuthResult authResult = new AuthResult(oauth2AccessToken.getUid(), oauth2AccessToken.getToken());
             if (socialCallback instanceof SocialAuthCallback) {
-                ((SocialAuthCallback) socialCallback).success(oauth2AccessToken.getToken());
+                ((SocialAuthCallback) socialCallback).success(authResult);
             } else if (socialCallback instanceof SocialLoginCallback) {
-                BaseToken baseToken = new BaseToken(oauth2AccessToken.getUid(), oauth2AccessToken.getToken());
-                fetchUserInfo(baseToken, ((SocialLoginCallback) socialCallback));
+                fetchUserInfo(authResult, ((SocialLoginCallback) socialCallback));
             }
         } else {
             if (socialCallback != null) {
@@ -74,17 +70,17 @@ public class WBAuth extends WBSocial implements IAuth, WbAuthListener {
     }
 
     @SuppressLint("CheckResult")
-    private void fetchUserInfo(final BaseToken baseToken, final SocialLoginCallback callback) {
+    private void fetchUserInfo(final AuthResult authResult, final SocialLoginCallback callback) {
         Observable.create(new ObservableOnSubscribe<WBUser>() {
             @Override
             public void subscribe(ObservableEmitter<WBUser> emitter) throws Exception {
                 Request request = new Request.Builder()
-                        .url(userInfoUrl(baseToken.getAccess_token(), baseToken.getOpenId())).build();
+                        .url(userInfoUrl(authResult.getCode(), authResult.getOpenId())).build();
                 try {
                     Response response = okHttpClient.newCall(request).execute();
                     if (response.isSuccessful()) {
                         WBUser user = WBUser.parse(response.body().string());
-                        user.setBaseToken(baseToken);
+                        user.setAuthResult(authResult);
                         emitter.onNext(user);
                     }
                 } catch (Exception e) {

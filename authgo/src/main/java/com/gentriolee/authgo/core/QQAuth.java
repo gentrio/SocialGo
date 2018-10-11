@@ -4,12 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.gentriolee.authgo.R;
 import com.gentriolee.authgo.core.callback.SocialAuthCallback;
 import com.gentriolee.authgo.core.callback.SocialLoginCallback;
-import com.gentriolee.authgo.core.entities.BaseToken;
+import com.gentriolee.authgo.core.entities.AuthResult;
 import com.gentriolee.authgo.core.entities.QQUser;
-import com.gentriolee.socialgo.core.ISocial;
 import com.gentriolee.socialgo.core.QQSocial;
 import com.gentriolee.socialgo.core.callback.SocialCallback;
 import com.tencent.tauth.IUiListener;
@@ -49,7 +47,8 @@ public class QQAuth extends QQSocial implements IAuth, IUiListener {
             tencent.login(activity, "all", this);
         } else {
             if (socialCallback instanceof SocialAuthCallback) {
-                ((SocialAuthCallback) socialCallback).success(tencent.getAccessToken());
+                AuthResult authResult = new AuthResult(tencent.getOpenId(), tencent.getAccessToken());
+                ((SocialAuthCallback) socialCallback).success(authResult);
             }
         }
     }
@@ -65,11 +64,11 @@ public class QQAuth extends QQSocial implements IAuth, IUiListener {
             JSONObject jsonObject = new JSONObject(obj.toString());
             String token = jsonObject.getString("access_token");
             String openid = jsonObject.getString("openid");
+            AuthResult authResult = new AuthResult(openid, token);
             if (socialCallback instanceof SocialAuthCallback) {
-                ((SocialAuthCallback) socialCallback).success(token);
+                ((SocialAuthCallback) socialCallback).success(authResult);
             } else if (socialCallback instanceof SocialLoginCallback) {
-                BaseToken baseToken = new BaseToken(openid, token);
-                fetchUserInfo(baseToken, ((SocialLoginCallback) socialCallback));
+                fetchUserInfo(authResult, ((SocialLoginCallback) socialCallback));
             }
         } catch (Exception e) {
             socialCallback.fail(ErrCode.ERR_SDK_INTERNAL, e.getMessage());
@@ -77,17 +76,17 @@ public class QQAuth extends QQSocial implements IAuth, IUiListener {
     }
 
     @SuppressLint("CheckResult")
-    private void fetchUserInfo(final BaseToken baseToken, final SocialLoginCallback callback) {
+    private void fetchUserInfo(final AuthResult authResult, final SocialLoginCallback callback) {
         Observable.create(new ObservableOnSubscribe<QQUser>() {
             @Override
             public void subscribe(ObservableEmitter<QQUser> emitter) throws Exception {
                 Request request = new Request.Builder()
-                        .url(userInfoUrl(baseToken.getAccess_token(), baseToken.getOpenId())).build();
+                        .url(userInfoUrl(authResult.getCode(), authResult.getOpenId())).build();
                 try {
                     Response response = okHttpClient.newCall(request).execute();
                     if (response.isSuccessful()) {
                         QQUser user = QQUser.parse(response.body().string());
-                        user.setBaseToken(baseToken);
+                        user.setAuthResult(authResult);
                         emitter.onNext(user);
                     }
                 } catch (Exception e) {

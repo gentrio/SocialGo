@@ -46,6 +46,53 @@ public class AuthGo implements ISocial {
     }
 
     //<editor-fold desc="授权登录的方式">
+
+    /**
+     * 根据target 来授权
+     * @param activity
+     * @param target
+     * @param callback
+     */
+    public void auth(Activity activity, int target, SocialAuthCallback callback) {
+        switch (target) {
+            case ISocial.TARGET_WX:
+                authWX(activity, callback);
+                break;
+            case ISocial.TARGET_WB:
+                authWB(activity, callback);
+                break;
+            case ISocial.TARGET_QQ:
+                authQQ(activity, callback);
+                break;
+            case ISocial.TARGET_DD:
+                authDD(activity, callback);
+                break;
+        }
+    }
+
+    /**
+     * 根据target 来登录
+     * @param activity
+     * @param target
+     * @param callback
+     */
+    public void login(Activity activity, int target, SocialLoginCallback callback) {
+        switch (target) {
+            case ISocial.TARGET_WX:
+                loginWX(activity, callback);
+                break;
+            case ISocial.TARGET_WB:
+                loginWB(activity, callback);
+                break;
+            case ISocial.TARGET_QQ:
+                loginQQ(activity, callback);
+                break;
+            case ISocial.TARGET_DD:
+                loginDD(activity, callback);
+                break;
+        }
+    }
+
     /**
      * 微信授权
      * @param activity
@@ -121,7 +168,7 @@ public class AuthGo implements ISocial {
      * @param activity
      * @param callback
      */
-    public void loginDD(Activity activity, SocialAuthCallback callback) {
+    public void loginDD(Activity activity, SocialLoginCallback callback) {
         ddAuth = new DDAuth(activity, builder.getDdAppId(), builder.getDdSecretId());
         ddAuth.login(callback);
     }

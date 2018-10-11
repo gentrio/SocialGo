@@ -48,7 +48,7 @@ public class QQUser extends BaseUser{
         return "QQUser{" +
                 "qZoneHeadImage='" + qZoneHeadImage + '\'' +
                 ", qZoneHeadImageLarge='" + qZoneHeadImageLarge + '\'' +
-                ", baseToken=" + baseToken +
+                ", authResult=" + authResult +
                 ", nickName='" + nickName + '\'' +
                 ", sex=" + sex +
                 ", headImageUrl='" + headImageUrl + '\'' +

@@ -50,7 +50,7 @@ public class ShareGo implements ISocial {
     //<editor-fold desc="分享方式">
 
     /**
-     * 根据ShareEntity的type来执行不同分享
+     * 根据ShareEntity的target来执行不同分享
      * @param activity
      * @param shareInfo
      * @param callback

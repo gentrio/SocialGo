@@ -78,7 +78,7 @@ public class WBUser extends BaseUser{
                 ", city='" + city + '\'' +
                 ", province='" + province + '\'' +
                 ", headimgurl_hd='" + headimgurl_hd + '\'' +
-                ", baseToken=" + baseToken +
+                ", authResult=" + authResult +
                 ", nickName='" + nickName + '\'' +
                 ", sex=" + sex +
                 ", headImageUrl='" + headImageUrl + '\'' +

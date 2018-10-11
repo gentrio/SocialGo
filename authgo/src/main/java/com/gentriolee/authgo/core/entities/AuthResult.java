@@ -4,15 +4,15 @@ package com.gentriolee.authgo.core.entities;
  * Created by gentriolee
  */
 
-public class BaseToken {
+public class AuthResult {
 
     private String openId;
 
-    private String access_token;
+    private String code;
 
-    public BaseToken(String openId, String access_token) {
+    public AuthResult(String openId, String code) {
         this.openId = openId;
-        this.access_token = access_token;
+        this.code = code;
     }
 
     public String getOpenId() {
@@ -23,19 +23,19 @@ public class BaseToken {
         this.openId = openId;
     }
 
-    public String getAccess_token() {
-        return access_token;
+    public String getCode() {
+        return code;
     }
 
-    public void setAccess_token(String access_token) {
-        this.access_token = access_token;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     @Override
     public String toString() {
-        return "BaseToken{" +
+        return "AuthResult{" +
                 "openId='" + openId + '\'' +
-                ", access_token='" + access_token + '\'' +
+                ", code='" + code + '\'' +
                 '}';
     }
 }

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.gentriolee.authgo.core.AuthGo;
 import com.gentriolee.authgo.core.callback.SocialAuthCallback;
 import com.gentriolee.authgo.core.callback.SocialLoginCallback;
+import com.gentriolee.authgo.core.entities.AuthResult;
 import com.gentriolee.authgo.core.entities.BaseUser;
 import com.gentriolee.sharego.core.ShareGo;
 import com.gentriolee.sharego.core.callback.SocialShareCallback;
@@ -172,8 +173,8 @@ public class MainActivity extends AppCompatActivity {
 
     private SocialAuthCallback mSocialAuthCallback = new SocialAuthCallback() {
         @Override
-        public void success(String token) {
-            String msg = "success:" + getTarget() + " code:" + token;
+        public void success(AuthResult authResult) {
+            String msg = "success:" + getTarget() + " code:" + authResult.getCode();
             toast(msg);
         }
 

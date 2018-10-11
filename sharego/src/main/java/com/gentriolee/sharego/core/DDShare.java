@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import com.android.dingtalk.share.ddsharemodule.IDDAPIEventHandler;
+import com.android.dingtalk.share.ddsharemodule.ShareConstant;
 import com.android.dingtalk.share.ddsharemodule.message.BaseReq;
 import com.android.dingtalk.share.ddsharemodule.message.BaseResp;
 import com.android.dingtalk.share.ddsharemodule.message.DDImageMessage;
@@ -122,13 +123,15 @@ public class DDShare extends DDSocial implements IShare, IDDAPIEventHandler {
 
     @Override
     public void onResp(BaseResp baseResp) {
-        if (baseResp.mErrCode == BaseResp.ErrCode.ERR_OK) {
-            if (socialCallback instanceof SocialShareCallback) {
-                ((SocialShareCallback) socialCallback).success();
-            }
-        } else {
-            if (socialCallback != null) {
-                socialCallback.cancel();
+        if (baseResp.getType() == ShareConstant.COMMAND_SENDMESSAGE_TO_DD) {
+            if (baseResp.mErrCode == BaseResp.ErrCode.ERR_OK) {
+                if (socialCallback instanceof SocialShareCallback) {
+                    ((SocialShareCallback) socialCallback).success();
+                }
+            } else {
+                if (socialCallback != null) {
+                    socialCallback.cancel();
+                }
             }
         }
     }

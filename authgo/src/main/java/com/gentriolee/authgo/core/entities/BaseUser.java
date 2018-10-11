@@ -6,7 +6,7 @@ package com.gentriolee.authgo.core.entities;
 
 public class BaseUser {
 
-    protected BaseToken baseToken;
+    protected AuthResult authResult;
 
     protected String nickName;
 
@@ -21,12 +21,12 @@ public class BaseUser {
 
     protected String headImageUrlLarge;
 
-    public BaseToken getBaseToken() {
-        return baseToken;
+    public AuthResult getAuthResult() {
+        return authResult;
     }
 
-    public void setBaseToken(BaseToken baseToken) {
-        this.baseToken = baseToken;
+    public void setAuthResult(AuthResult authResult) {
+        this.authResult = authResult;
     }
 
     public String getNickName() {
@@ -64,7 +64,7 @@ public class BaseUser {
     @Override
     public String toString() {
         return "BaseUser{" +
-                "baseToken=" + baseToken +
+                "authResult=" + authResult +
                 ", nickName='" + nickName + '\'' +
                 ", sex=" + sex +
                 ", headImageUrl='" + headImageUrl + '\'' +
