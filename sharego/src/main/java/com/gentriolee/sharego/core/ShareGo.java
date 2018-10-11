@@ -10,6 +10,7 @@ import com.gentriolee.sharego.core.entities.WXLaunchEntity;
 import com.gentriolee.socialgo.config.SocialConfig;
 import com.gentriolee.socialgo.core.ISocial;
 import com.gentriolee.socialgo.core.SocialGo;
+import com.gentriolee.socialgo.core.callback.SocialCallback;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 
@@ -84,8 +85,9 @@ public class ShareGo implements ISocial {
      * @param callback
      */
     public void shareWX(Activity activity, ShareEntity shareInfo, SocialShareCallback callback) {
-        wxShare = new WXShare(activity, builder.getWxAppId(), builder.getWxSecretId());
-        wxShare.share(callback, shareInfo);
+        resetCallbackTarget(shareInfo, callback);
+        wxShare = new WXShare(activity, builder.getWxAppId(), builder.getWxSecretId(), callback);
+        wxShare.share(shareInfo);
     }
 
     /**
@@ -95,8 +97,8 @@ public class ShareGo implements ISocial {
      * @param callback
      */
     public void launchWX(Activity activity, WXLaunchEntity wxLaunchEntity, SocialLaunchCallback callback) {
-        wxShare = new WXShare(activity, builder.getWxAppId(), builder.getWxSecretId());
-        wxShare.launch(callback, wxLaunchEntity);
+        wxShare = new WXShare(activity, builder.getWxAppId(), builder.getWxSecretId(), callback);
+        wxShare.launch(wxLaunchEntity);
     }
 
     /**
@@ -106,8 +108,9 @@ public class ShareGo implements ISocial {
      * @param callback
      */
     public void shareQQ(Activity activity, ShareEntity shareInfo, SocialShareCallback callback) {
-        qqShare = new QQShare(activity, builder.getQqAppId());
-        qqShare.share(callback, shareInfo);
+        resetCallbackTarget(shareInfo, callback);
+        qqShare = new QQShare(activity, builder.getQqAppId(), callback);
+        qqShare.share(shareInfo);
     }
 
     /**
@@ -117,8 +120,8 @@ public class ShareGo implements ISocial {
      * @param callback
      */
     public void shareWB(Activity activity, ShareEntity shareInfo, SocialShareCallback callback) {
-        wbShare = new WBShare(activity, builder.getWbAppId(), builder.getWbRedirectUrl());
-        wbShare.share(callback, shareInfo);
+        wbShare = new WBShare(activity, builder.getWbAppId(), builder.getWbRedirectUrl(), callback);
+        wbShare.share(shareInfo);
     }
 
     /**
@@ -128,9 +131,21 @@ public class ShareGo implements ISocial {
      * @param callback
      */
     public void shareDD(Activity activity, ShareEntity shareInfo, SocialShareCallback callback) {
-        ddShare = new DDShare(activity, builder.getDdAppId(), builder.getDdSecretId());
-        ddShare.share(callback, shareInfo);
+        ddShare = new DDShare(activity, builder.getDdAppId(), builder.getDdSecretId(), callback);
+        ddShare.share(shareInfo);
     }
+
+    /**
+     * 微信和QQ存在两个Target 要根据分享类型来重设Target
+     * @param shareInfo
+     * @param callback
+     */
+    private void resetCallbackTarget(ShareEntity shareInfo, SocialCallback callback) {
+        if (callback != null && shareInfo != null) {
+            callback.setTarget(shareInfo.getTarget());
+        }
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="分享需要的回调处理">

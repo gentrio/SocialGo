@@ -35,13 +35,13 @@ public class WXAuth extends WXSocial implements IAuth, IWXAPIEventHandler {
 
     private static final String BASE_URL = "https://api.weixin.qq.com/sns/";
 
-    WXAuth(Activity activity, String appId, String secretId) {
-        super(activity, appId, secretId);
+    WXAuth(Activity activity, String appId, String secretId, SocialCallback callback) {
+        super(activity, appId, secretId, callback);
     }
 
     @Override
-    public void auth(SocialCallback callback) {
-        if (uninstallInterrupt(callback)) {
+    public void auth() {
+        if (unInitInterrupt()) {
             return;
         }
 
@@ -52,11 +52,9 @@ public class WXAuth extends WXSocial implements IAuth, IWXAPIEventHandler {
     }
 
     @Override
-    public void login(SocialCallback callback) {
-        auth(callback);
+    public void login() {
+        auth();
     }
-
-
 
     @Override
     public void onReq(BaseReq baseReq) {

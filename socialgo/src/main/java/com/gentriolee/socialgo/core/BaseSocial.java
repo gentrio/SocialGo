@@ -16,9 +16,10 @@ public class BaseSocial {
     protected Activity activity;
     protected String appId;
 
-    protected BaseSocial(Activity activity, String appId) {
+    protected BaseSocial(Activity activity, String appId, SocialCallback callback) {
         this.activity = activity;
         this.appId = appId;
+        this.socialCallback = callback;
     }
 
     protected final String getString(@StringRes int resId) {

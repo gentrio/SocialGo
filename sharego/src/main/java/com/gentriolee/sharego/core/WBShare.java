@@ -3,28 +3,22 @@ package com.gentriolee.sharego.core;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 
 import com.gentriolee.sharego.core.callback.SocialShareCallback;
 import com.gentriolee.sharego.core.entities.ShareEntity;
 import com.gentriolee.sharego.core.entities.WBShareEntity;
 import com.gentriolee.sharego.utils.ShareUtils;
 import com.gentriolee.socialgo.core.WBSocial;
+import com.gentriolee.socialgo.core.callback.SocialCallback;
 import com.sina.weibo.sdk.api.BaseMediaObject;
 import com.sina.weibo.sdk.api.ImageObject;
-import com.sina.weibo.sdk.api.MultiImageObject;
 import com.sina.weibo.sdk.api.TextObject;
-import com.sina.weibo.sdk.api.VideoSourceObject;
 import com.sina.weibo.sdk.api.WebpageObject;
 import com.sina.weibo.sdk.api.WeiboMultiMessage;
 import com.sina.weibo.sdk.share.WbShareCallback;
 import com.sina.weibo.sdk.share.WbShareHandler;
 import com.sina.weibo.sdk.utils.Utility;
-
-import java.io.File;
-import java.util.ArrayList;
 
 /**
  * Created by gentriolee
@@ -34,21 +28,16 @@ final class WBShare extends WBSocial implements IShare {
 
     private WbShareCallback wbShareCallback;
 
-    WBShare(Activity activity, String appId, String redirectUrl) {
-        super(activity, appId, redirectUrl);
+    WBShare(Activity activity, String appId, String redirectUrl, SocialCallback callback) {
+        super(activity, appId, redirectUrl, callback);
     }
 
     @Override
-    public void share(SocialShareCallback callback, ShareEntity shareInfo) {
-        callback.setTarget(shareInfo.getTarget());
-        socialCallback = callback;
-        //微博未安装时会使用网页版微博 可根据业务自行修改
-//        if (!WbSdk.isWbInstall(activity)) {
-//            if (callback != null) {
-//                callback.socialError(activity.getString(R.string.share_module_wb_uninstall));
-//            }
-//            return;
-//        }
+    public void share(ShareEntity shareInfo) {
+        if (unInitInterrupt()) {
+            return;
+        }
+
         initShareLister();
         shareHandler = new WbShareHandler(activity);
         shareHandler.registerApp();

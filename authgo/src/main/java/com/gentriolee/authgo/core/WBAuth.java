@@ -8,7 +8,6 @@ import com.gentriolee.authgo.core.callback.SocialAuthCallback;
 import com.gentriolee.authgo.core.callback.SocialLoginCallback;
 import com.gentriolee.authgo.core.entities.AuthResult;
 import com.gentriolee.authgo.core.entities.WBUser;
-import com.gentriolee.socialgo.core.ISocial;
 import com.gentriolee.socialgo.core.WBSocial;
 import com.gentriolee.socialgo.core.callback.SocialCallback;
 import com.sina.weibo.sdk.auth.AccessTokenKeeper;
@@ -34,22 +33,23 @@ public class WBAuth extends WBSocial implements IAuth, WbAuthListener {
 
     private static final String BASE_URL = "https://api.weibo.com/2/users/show.json";
 
-    WBAuth(Activity activity, String appId, String redirectUrl) {
-        super(activity, appId, redirectUrl);
+    WBAuth(Activity activity, String appId, String redirectUrl, SocialCallback callback) {
+        super(activity, appId, redirectUrl, callback);
     }
 
     @Override
-    public void auth(SocialCallback callback) {
-        callback.setTarget(ISocial.TARGET_WB);
-        socialCallback = callback;
+    public void auth() {
+        if (unInitInterrupt()) {
+            return;
+        }
 
         ssoHandler = new SsoHandler(activity);
         ssoHandler.authorize(this);
     }
 
     @Override
-    public void login(SocialCallback callback) {
-        auth(callback);
+    public void login() {
+        auth();
     }
 
     @Override

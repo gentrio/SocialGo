@@ -13,6 +13,7 @@ import com.gentriolee.sharego.core.entities.WXLaunchEntity;
 import com.gentriolee.sharego.core.entities.WXShareEntity;
 import com.gentriolee.sharego.utils.ShareUtils;
 import com.gentriolee.socialgo.core.WXSocial;
+import com.gentriolee.socialgo.core.callback.SocialCallback;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -31,13 +32,13 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 
 public class WXShare extends WXSocial implements IShare, IWXAPIEventHandler {
 
-    WXShare(Activity activity, String appId, String secretId) {
-        super(activity, appId, secretId);
+    WXShare(Activity activity, String appId, String secretId, SocialCallback callback) {
+        super(activity, appId, secretId, callback);
     }
 
     @Override
-    public void share(SocialShareCallback callback, ShareEntity shareInfo) {
-        if (uninstallInterrupt(callback)) {
+    public void share(ShareEntity shareInfo) {
+        if (unInitInterrupt()) {
             return;
         }
 
@@ -60,8 +61,8 @@ public class WXShare extends WXSocial implements IShare, IWXAPIEventHandler {
     }
 
 
-    public void launch(SocialLaunchCallback callback, WXLaunchEntity launchInfo) {
-        if (uninstallInterrupt(callback)) {
+    public void launch(WXLaunchEntity launchInfo) {
+        if (unInitInterrupt()) {
             return;
         }
 

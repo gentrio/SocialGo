@@ -17,21 +17,30 @@ public class WXSocial extends BaseSocial{
     protected IWXAPI iwxapi;
     protected String secretId;
 
-    protected WXSocial(Activity activity, String appId, String secretId) {
-        super(activity, appId);
+    protected WXSocial(Activity activity, String appId, String secretId, SocialCallback callback) {
+        super(activity, appId, callback);
         this.secretId = secretId;
 
-        if (TextUtils.isEmpty(appId)) {
-            throw new RuntimeException("Wechat's appId is empty!");
+        if (callback != null) {
+            callback.setTarget(ISocial.TARGET_WX);
+        }
+
+        if (TextUtils.isEmpty(appId) || TextUtils.isEmpty(secretId)) {
+            if (callback != null) {
+                callback.fail(ISocial.ErrCode.ERR_APPID_EMPTY, "Wechat's appId or secretId is empty!");
+            }
+            return;
         }
 
         iwxapi = WXAPIFactory.createWXAPI(activity, appId, true);
         iwxapi.registerApp(appId);
     }
 
-    protected boolean uninstallInterrupt(SocialCallback callback) {
-        callback.setTarget(ISocial.TARGET_WX);
-        socialCallback = callback;
+    protected boolean unInitInterrupt() {
+        if (iwxapi == null) {
+            return true;
+        }
+
         if (!iwxapi.isWXAppInstalled()) {
             if (socialCallback != null) {
                 socialCallback.fail(ISocial.ErrCode.ERR_NOT_INSTALLED, getString(R.string.social_uninstall_wx));

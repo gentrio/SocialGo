@@ -33,13 +33,13 @@ public class QQAuth extends QQSocial implements IAuth, IUiListener {
 
     private static final String BASE_URL = "https://graph.qq.com/user/get_user_info";
 
-    QQAuth(Activity activity, String appId) {
-        super(activity, appId);
+    QQAuth(Activity activity, String appId, SocialCallback callback) {
+        super(activity, appId, callback);
     }
 
     @Override
-    public void auth(SocialCallback callback) {
-        if (uninstallInterrupt(callback)) {
+    public void auth() {
+        if (unInitInterrupt()) {
             return;
         }
 
@@ -54,8 +54,8 @@ public class QQAuth extends QQSocial implements IAuth, IUiListener {
     }
 
     @Override
-    public void login(SocialCallback callback) {
-        auth(callback);
+    public void login() {
+        auth();
     }
 
     @Override

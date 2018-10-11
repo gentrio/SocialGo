@@ -99,8 +99,8 @@ public class AuthGo implements ISocial {
      * @param callback
      */
     public void authWX(Activity activity, SocialAuthCallback callback) {
-        wxAuth = new WXAuth(activity, builder.getWxAppId(), builder.getWxSecretId());
-        wxAuth.auth(callback);
+        wxAuth = new WXAuth(activity, builder.getWxAppId(), builder.getWxSecretId(), callback);
+        wxAuth.auth();
     }
 
     /**
@@ -109,8 +109,8 @@ public class AuthGo implements ISocial {
      * @param callback
      */
     public void authWB(Activity activity, SocialAuthCallback callback) {
-        wbAuth = new WBAuth(activity, builder.getWbAppId(), builder.getWbRedirectUrl());
-        wbAuth.auth(callback);
+        wbAuth = new WBAuth(activity, builder.getWbAppId(), builder.getWbRedirectUrl(), callback);
+        wbAuth.auth();
     }
 
     /**
@@ -119,8 +119,8 @@ public class AuthGo implements ISocial {
      * @param callback
      */
     public void authQQ(Activity activity, SocialAuthCallback callback) {
-        qqAuth = new QQAuth(activity, builder.getQqAppId());
-        qqAuth.auth(callback);
+        qqAuth = new QQAuth(activity, builder.getQqAppId(), callback);
+        qqAuth.auth();
     }
 
     /**
@@ -129,8 +129,8 @@ public class AuthGo implements ISocial {
      * @param callback
      */
     public void authDD(Activity activity, SocialAuthCallback callback) {
-        ddAuth = new DDAuth(activity, builder.getDdAppId(), builder.getDdSecretId());
-        ddAuth.auth(callback);
+        ddAuth = new DDAuth(activity, builder.getDdAppId(), builder.getDdSecretId(), callback);
+        ddAuth.auth();
     }
 
     /**
@@ -139,8 +139,8 @@ public class AuthGo implements ISocial {
      * @param callback
      */
     public void loginWX(Activity activity, SocialLoginCallback callback) {
-        wxAuth = new WXAuth(activity, builder.getWxAppId(), builder.getWxSecretId());
-        wxAuth.login(callback);
+        wxAuth = new WXAuth(activity, builder.getWxAppId(), builder.getWxSecretId(), callback);
+        wxAuth.login();
     }
 
     /**
@@ -149,8 +149,8 @@ public class AuthGo implements ISocial {
      * @param callback
      */
     public void loginWB(Activity activity, SocialLoginCallback callback) {
-        wbAuth = new WBAuth(activity, builder.getWbAppId(), builder.getWbRedirectUrl());
-        wbAuth.login(callback);
+        wbAuth = new WBAuth(activity, builder.getWbAppId(), builder.getWbRedirectUrl(), callback);
+        wbAuth.login();
     }
 
     /**
@@ -159,8 +159,8 @@ public class AuthGo implements ISocial {
      * @param callback
      */
     public void loginQQ(Activity activity, SocialLoginCallback callback) {
-        qqAuth = new QQAuth(activity, builder.getQqAppId());
-        qqAuth.login(callback);
+        qqAuth = new QQAuth(activity, builder.getQqAppId(), callback);
+        qqAuth.login();
     }
 
     /**
@@ -169,8 +169,8 @@ public class AuthGo implements ISocial {
      * @param callback
      */
     public void loginDD(Activity activity, SocialLoginCallback callback) {
-        ddAuth = new DDAuth(activity, builder.getDdAppId(), builder.getDdSecretId());
-        ddAuth.login(callback);
+        ddAuth = new DDAuth(activity, builder.getDdAppId(), builder.getDdSecretId(), callback);
+        ddAuth.login();
     }
     //</editor-fold>
 
@@ -192,13 +192,17 @@ public class AuthGo implements ISocial {
     @Override
     @Unsupported
     public void onDDAPIHandlerReq(com.android.dingtalk.share.ddsharemodule.message.BaseReq baseReq) {
-        //暂不支持钉钉授权登录
+        if (ddAuth != null) {
+            ddAuth.onReq(baseReq);
+        }
     }
 
     @Override
     @Unsupported
     public void onDDAPIHandlerResp(com.android.dingtalk.share.ddsharemodule.message.BaseResp baseResp) {
-        //暂不支持钉钉授权登录
+        if (ddAuth != null) {
+            ddAuth.onResp(baseResp);
+        }
     }
 
     /**

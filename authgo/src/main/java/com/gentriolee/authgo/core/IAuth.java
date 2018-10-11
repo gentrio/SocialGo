@@ -17,12 +17,12 @@ public interface IAuth {
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS).build();
 
-    void auth(SocialCallback callback);
+    void auth();
 
-    void login(SocialCallback callback);
+    void login();
 
     interface ErrCode extends ISocial.ErrCode {
 
-
+        //授权的ErrCode 从200开始
     }
 }

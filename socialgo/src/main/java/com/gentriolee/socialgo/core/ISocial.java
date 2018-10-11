@@ -41,10 +41,15 @@ public interface ISocial {
 
     interface ErrCode {
 
+        //公用ErrCode -1~99
+
         //SDK内部调用错误
         int ERR_SDK_INTERNAL = -1;
 
+        //第三方平台的APP_ID缺失
+        int ERR_APPID_EMPTY = 1;
+
         //未安装应用
-        int ERR_NOT_INSTALLED = 100;
+        int ERR_NOT_INSTALLED = 2;
     }
 }

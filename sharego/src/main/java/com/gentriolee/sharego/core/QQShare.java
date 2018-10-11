@@ -38,8 +38,8 @@ public class QQShare extends QQSocial implements IShare {
 
     private IUiListener shareListener;
 
-    QQShare(Activity activity, String appId) {
-        super(activity, appId);
+    QQShare(Activity activity, String appId, SocialCallback callback) {
+        super(activity, appId, callback);
     }
 
     private void initShareListener() {
@@ -57,8 +57,8 @@ public class QQShare extends QQSocial implements IShare {
      * qq有个坑，采用onActivityResult的方式，如果留在qq的话，home键退出之后无法正确回调
      */
     @Override
-    public void share(SocialShareCallback callback, ShareEntity shareInfo) {
-        if (uninstallInterrupt(callback)) {
+    public void share(ShareEntity shareInfo) {
+        if (unInitInterrupt()) {
             return;
         }
 

@@ -19,6 +19,7 @@ import com.gentriolee.sharego.core.entities.DDShareEntity;
 import com.gentriolee.sharego.core.entities.ShareEntity;
 import com.gentriolee.sharego.utils.ShareUtils;
 import com.gentriolee.socialgo.core.DDSocial;
+import com.gentriolee.socialgo.core.callback.SocialCallback;
 
 /**
  * Created by gentriolee
@@ -26,13 +27,13 @@ import com.gentriolee.socialgo.core.DDSocial;
 
 public class DDShare extends DDSocial implements IShare, IDDAPIEventHandler {
 
-    DDShare(Activity activity, String appId, String secretId) {
-        super(activity, appId, secretId);
+    DDShare(Activity activity, String appId, String secretId, SocialCallback callback) {
+        super(activity, appId, secretId, callback);
     }
 
     @Override
-    public void share(SocialShareCallback callback, ShareEntity shareInfo) {
-        if (uninstallInterrupt(callback)) {
+    public void share(ShareEntity shareInfo) {
+        if (unInitInterrupt()) {
             return;
         }
 
@@ -123,7 +124,7 @@ public class DDShare extends DDSocial implements IShare, IDDAPIEventHandler {
 
     @Override
     public void onResp(BaseResp baseResp) {
-        if (baseResp.getType() == ShareConstant.COMMAND_SENDMESSAGE_TO_DD) {
+        if (baseResp.getType() == ShareConstant.COMMAND_SENDAUTH) {
             if (baseResp.mErrCode == BaseResp.ErrCode.ERR_OK) {
                 if (socialCallback instanceof SocialShareCallback) {
                     ((SocialShareCallback) socialCallback).success();

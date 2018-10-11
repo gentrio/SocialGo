@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             AuthGo.getInstance().authWB(this, mSocialAuthCallback);
         });
         findViewById(R.id.btn_ding_talk_auth).setOnClickListener(v -> {
-
+            AuthGo.getInstance().authDD(this, mSocialAuthCallback);
         });
     }
 
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             AuthGo.getInstance().loginWB(this, mSocialLoginCallback);
         });
         findViewById(R.id.btn_ding_talk_login).setOnClickListener(v -> {
-
+            AuthGo.getInstance().loginDD(this, mSocialLoginCallback);
         });
     }
 
@@ -87,12 +87,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void shareOneMethod() {
         findViewById(R.id.btn_wechat_share_text).setOnClickListener(v -> {
-            try{
-                ShareGo.getInstance().shareWX(MainActivity.this, WXShareEntity.createTextInfo(TITLE), mSocialShareCallback);
-            }catch (Exception e) {
-                String msg = "Sample 未提供第三方分享id进行测试";
-                toast(msg);
-            }
+            ShareGo.getInstance().shareWX(MainActivity.this, WXShareEntity.createTextInfo(TITLE), mSocialShareCallback);
         });
     }
 
@@ -142,12 +137,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
             }
-            try{
-                ShareGo.getInstance().share(MainActivity.this, shareEntity, mSocialShareCallback);
-            }catch (Exception e) {
-                String msg = "Sample 未提供第三方分享id进行测试";
-                toast(msg);
-            }
+            ShareGo.getInstance().share(MainActivity.this, shareEntity, mSocialShareCallback);
         });
     }
 
