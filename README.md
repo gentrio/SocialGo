@@ -2,6 +2,24 @@
 
 第三方分享和登录，支持微信、QQ、微博、钉钉
 
+## 支持情况
+
+| 第三方     |  分享文字  |    分享图片   |    分享链接   |    分享小程序   | 唤起小程序 |
+| :-------  | :---: |:----------:|:----------:|:------------:| --------  |
+|   微信    | :heavy_check_mark: | :heavy_check_mark: |:heavy_check_mark:|:heavy_check_mark:| :heavy_check_mark: |
+| 朋友圈 | :heavy_check_mark: | :heavy_check_mark: |:heavy_check_mark:||  |
+|     QQ     | :heavy_check_mark:（无回调） | :heavy_check_mark: |:heavy_check_mark:||  |
+| QQ空间 | :heavy_check_mark: | :heavy_check_mark: |:heavy_check_mark:||  |
+|     微博 | :heavy_check_mark: | :heavy_check_mark: |:heavy_check_mark:||  |
+|     钉钉  | :heavy_check_mark: | :heavy_check_mark:  |:heavy_check_mark:||  |
+
+| 第三方     |  授权  |    登录     |
+| :-------  | :---: |:----------:|
+|     微信    | :heavy_check_mark: | :heavy_check_mark: |
+|     QQ     | :heavy_check_mark: | :heavy_check_mark: |
+|     微博 | :heavy_check_mark: | :heavy_check_mark: |
+|     钉钉  | :heavy_check_mark: | :heavy_check_mark: |
+
 ## 工程结构
 
 👉️ `socialgo` 第三方社会化库的配置中心
@@ -17,8 +35,8 @@
 ### Gradle Dependency
 
 ```gradle
-implementation 'com.gentriolee.socialgo:sharego:1.1.0' //分享
-implementation 'com.gentriolee.socialgo:authgo:1.1.0'   //登录
+implementation 'com.gentriolee.socialgo:sharego:1.1.1' //分享
+implementation 'com.gentriolee.socialgo:authgo:1.1.1'   //授权&登录
 ```
 
 ### AndroidManifest.xml配置
@@ -48,7 +66,6 @@ implementation 'com.gentriolee.socialgo:authgo:1.1.0'   //登录
 <activity
     android:name=".ddshare.DDShareActivity"
     android:exported="true"
-    android:screenOrientation="portrait"
     android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 <!-- 钉钉分享授权配置结束 -->
 
@@ -59,7 +76,6 @@ implementation 'com.gentriolee.socialgo:authgo:1.1.0'   //登录
     android:configChanges="keyboardHidden|orientation|screenSize"
     android:exported="true"
     android:launchMode="singleTask"
-    android:screenOrientation="portrait"
     android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 <!-- 微信分享授权配置结束 --> 
 ```
@@ -70,12 +86,11 @@ implementation 'com.gentriolee.socialgo:authgo:1.1.0'   //登录
 
 ```java
 SocialConfig.Builder builder = new SocialConfig.Builder()
-    .setQqAppId("")
-    .setWxAppId("")
-    .setWbAppId("")
-    .setWbRedirectUrl("")
-    .setDdAppId("")
-    .build();
+                .setQqAppId("")
+                .setWxAppId("", "")
+                .setWbAppId("", "")
+                .setDdAppId("", "")
+                .build();
 SocialConfig.init(getApplicationContext(), builder);
 ```
 
@@ -142,31 +157,44 @@ protected void onNewIntent(Intent intent) {
 ### 分享
 
 ```java
+ShareGo.getInstance().share();
 ShareGo.getInstance().shareWX()；
-ShareGo.getInstance().launchWX();
 ShareGo.getInstance().shareQQ();
 ShareGo.getInstance().shareWB();
 ShareGo.getInstance().shareDD();
+
+ShareGo.getInstance().launchWX();
 ```
-### 授权登录
+### 授权
 
 ```java
+AuthGo.getInstance().auth();
 AuthGo.getInstance().authWX();
 AuthGo.getInstance().authQQ();
 AuthGo.getInstance().authWB();
+AuthGo.getInstance().authDD();
+```
+
+### 登录
+```java
+AuthGo.getInstance().login();
+AuthGo.getInstance().loginWX();
+AuthGo.getInstance().loginQQ();
+AuthGo.getInstance().loginWB();
+AuthGo.getInstance().loginDD();
 ```
 
 License
 -------
 
     Copyright 2018 gentrio
-
+    
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
-
+    
        http://www.apache.org/licenses/LICENSE-2.0
-
+    
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.

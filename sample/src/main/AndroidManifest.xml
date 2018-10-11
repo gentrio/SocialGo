@@ -48,7 +48,6 @@
         <activity
             android:name=".ddshare.DDShareActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         <!-- 钉钉分享授权配置结束 -->
 
@@ -59,7 +58,6 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
     </application>
 

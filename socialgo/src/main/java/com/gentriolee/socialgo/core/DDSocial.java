@@ -7,7 +7,6 @@ import com.android.dingtalk.share.ddsharemodule.DDShareApiFactory;
 import com.android.dingtalk.share.ddsharemodule.IDDShareApi;
 import com.gentriolee.socialgo.R;
 import com.gentriolee.socialgo.core.callback.SocialCallback;
-import com.gentriolee.socialgo.exception.APPIdEmptyException;
 
 /**
  * Created by gentriolee
