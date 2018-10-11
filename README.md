@@ -1,5 +1,7 @@
 # 社会化工具库
 
+[![License](https://img.shields.io/badge/License%20-Apache%202-337ab7.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+
 第三方分享和登录，支持微信、QQ、微博、钉钉
 
 ## 支持情况
@@ -19,6 +21,11 @@
 | QQ空间 | :ballot_box_with_check: | :ballot_box_with_check: |:ballot_box_with_check:||  |
 |     微博 | :ballot_box_with_check: | :ballot_box_with_check: |:ballot_box_with_check:||  |
 |     钉钉  | :ballot_box_with_check: | :ballot_box_with_check: |:ballot_box_with_check:||  |
+
+### :exclamation: Tips
+
+* 微信分享回调 不再返回用户是否分享完成事件，cancel事件和success事件统一为success事件。[微信官方分享功能调整公告](https://mp.weixin.qq.com/cgi-bin/announce?action=getannouncement&announce_id=11526372695t90Dn&version=&lang=zh_CN&scene=21#wechat_redirect)
+* QQ原生SDK不支持纯文本分享，本库通过指定Activity跳转实现，故无分享回调。
 
 ## 工程结构
 
