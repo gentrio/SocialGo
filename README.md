@@ -4,21 +4,21 @@
 
 ## 支持情况
 
-| 第三方     |  分享文字  |    分享图片   |    分享链接   |    分享小程序   | 唤起小程序 |
-| :-------  | :---: |:----------:|:----------:|:------------:| --------  |
-|   微信    | :heavy_check_mark: | :heavy_check_mark: |:heavy_check_mark:|:heavy_check_mark:| :heavy_check_mark: |
-| 朋友圈 | :heavy_check_mark: | :heavy_check_mark: |:heavy_check_mark:||  |
-|     QQ     | :heavy_check_mark:（无回调） | :heavy_check_mark: |:heavy_check_mark:||  |
-| QQ空间 | :heavy_check_mark: | :heavy_check_mark: |:heavy_check_mark:||  |
-|     微博 | :heavy_check_mark: | :heavy_check_mark: |:heavy_check_mark:||  |
-|     钉钉  | :heavy_check_mark: | :heavy_check_mark:  |:heavy_check_mark:||  |
-
 | 第三方     |  授权  |    登录     |
-| :-------  | :---: |:----------:|
-|     微信    | :heavy_check_mark: | :heavy_check_mark: |
-|     QQ     | :heavy_check_mark: | :heavy_check_mark: |
-|     微博 | :heavy_check_mark: | :heavy_check_mark: |
-|     钉钉  | :heavy_check_mark: | :heavy_check_mark: |
+| :-------  | :---- |:-----------|
+|     微信    | :ballot_box_with_check: | :ballot_box_with_check: |
+|     QQ     | :ballot_box_with_check: | :ballot_box_with_check: |
+|     微博 | :ballot_box_with_check: | :ballot_box_with_check: |
+|     钉钉  | :ballot_box_with_check: | :ballot_box_with_check: |
+
+| 第三方     |  分享文字  |    分享图片   |    分享链接   |    分享小程序   | 唤起小程序 |
+| :-------  | :---- |:-----------|:-----------|:-------------| :-------  |
+|   微信    | :ballot_box_with_check: | :ballot_box_with_check: |:ballot_box_with_check:|:ballot_box_with_check:| :ballot_box_with_check: |
+| 朋友圈 | :ballot_box_with_check: | :ballot_box_with_check: |:ballot_box_with_check:||  |
+|     QQ     | :ballot_box_with_check: 无回调 | :ballot_box_with_check: |:ballot_box_with_check:||  |
+| QQ空间 | :ballot_box_with_check: | :ballot_box_with_check: |:ballot_box_with_check:||  |
+|     微博 | :ballot_box_with_check: | :ballot_box_with_check: |:ballot_box_with_check:||  |
+|     钉钉  | :ballot_box_with_check: | :ballot_box_with_check: |:ballot_box_with_check:||  |
 
 ## 工程结构
 
