@@ -1,6 +1,6 @@
 # 社会化工具库
 
-[![License](https://img.shields.io/badge/License%20-Apache%202-337ab7.svg)](https://www.apache.org/licenses/LICENSE-2.0)[![JCenter](https://img.shields.io/badge/Jcenter-1.1.1-brightgreen.svg)](http://jcenter.bintray.com/com/gentriolee/socialgo/)
+[![License](https://img.shields.io/badge/License%20-Apache%202-337ab7.svg)](https://www.apache.org/licenses/LICENSE-2.0) [![JCenter](https://img.shields.io/badge/Jcenter-1.1.1-brightgreen.svg)](http://jcenter.bintray.com/com/gentriolee/socialgo/)
 
 第三方分享和登录，支持微信、QQ、微博、钉钉
 
