@@ -191,7 +191,6 @@ AuthGo.getInstance().loginWB();
 AuthGo.getInstance().loginDD();
 ```
 
-
 License
 -------
 
